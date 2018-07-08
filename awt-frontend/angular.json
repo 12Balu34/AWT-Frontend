@@ -23,9 +23,18 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/AdminLteResources/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/AdminLteResources/font-awesome/css/font-awesome.min.css",
+              "src/assets/AdminLteResources/Ionicons/css/ionicons.min.css",
+              "src/assets/AdminLteResources/dist/css/AdminLTE.min.css",
+              "src/assets/AdminLteResources/dist/css/skins/skin-blue.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/AdminLteResources/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/AdminLteResources/dist/js/adminlte.min.js"
+            ]
           },
           "configurations": {
             "production": {
