@@ -6,6 +6,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { SignupComponent } from './signup/signup.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SignupComponent } from './signup/signup.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
