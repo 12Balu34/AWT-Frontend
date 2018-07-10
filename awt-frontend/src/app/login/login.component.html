@@ -7,20 +7,20 @@
     <p class="login-box-msg">Sign in to start your session</p>
 
     <form [formGroup]="loginForm" (submit)="login()">
-      <div class="form-group has-feedback">
+      <div class="form-group has-feedback" [ngClass]="{'has-error': (loginForm.controls.username.errors)
+          && (loginForm.controls.username.dirty)}">
         <input type="text" class="form-control form-control-success" placeholder="Username" formControlName="username" class="form-control">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-        <small *ngIf="loginForm.controls.username.errors?.required && loginForm.controls.username.dirty" id="nameHelp"
-               class="form-text text-muted text-danger">This field is required.
-        </small>
+        <span *ngIf="loginForm.controls.username.errors?.required && loginForm.controls.username.dirty"
+              class="help-block">This field is required.</span>
       </div>
 
-      <div class="form-group has-feedback">
+      <div class="form-group has-feedback" [ngClass]="{'has-error': (loginForm.controls.password.errors)
+          && (loginForm.controls.password.dirty)}">
         <input type="password" class="form-control" placeholder="Password" formControlName="password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        <small *ngIf="loginForm.controls.password.errors?.required && loginForm.controls.password.dirty" id="nameHelp"
-               class="form-text text-muted text-danger">This field is required.
-        </small>
+        <span *ngIf="loginForm.controls.password.errors?.required && loginForm.controls.password.dirty"
+              class="help-block">This field is required.</span>
       </div>
       <div class="row">
         <!-- /.col -->
