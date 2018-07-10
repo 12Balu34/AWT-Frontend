@@ -8,12 +8,19 @@
 
     <form [formGroup]="loginForm" (submit)="login()">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="Username" formControlName="username">
+        <input type="text" class="form-control form-control-success" placeholder="Username" formControlName="username" class="form-control">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <small *ngIf="loginForm.controls.username.errors?.required && loginForm.controls.username.dirty" id="nameHelp"
+               class="form-text text-muted text-danger">This field is required.
+        </small>
       </div>
+
       <div class="form-group has-feedback">
         <input type="password" class="form-control" placeholder="Password" formControlName="password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <small *ngIf="loginForm.controls.password.errors?.required && loginForm.controls.password.dirty" id="nameHelp"
+               class="form-text text-muted text-danger">This field is required.
+        </small>
       </div>
       <div class="row">
         <!-- /.col -->
