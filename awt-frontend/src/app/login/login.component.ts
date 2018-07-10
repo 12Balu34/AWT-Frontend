@@ -22,4 +22,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  private login() {
+    console.log(this.loginForm.getRawValue());
+  };
+
 }
