@@ -7,6 +7,9 @@ import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { SignupComponent } from './signup/signup.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {httpInterceptorProviders} from "./http-interceptors";
+import {AuthService} from "./services/auth/auth.service";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -19,8 +22,12 @@ import {ReactiveFormsModule} from "@angular/forms";
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders,
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
