@@ -1,32 +1,65 @@
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>AWT</b>APP</a>
+    <b>AWT</b>APP
   </div>
 
   <div class="register-box-body">
     <p class="login-box-msg">Register a new membership</p>
 
-    <form [formGroup]="">
-      <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="Full name">
+    <form [formGroup]="signupForm">
+      <div *ngIf="message" ngClass="messageClass">{{message}}</div>
+      <div class="form-group has-feedback" [ngClass]="{'has-error': (signupForm.controls.username.errors)
+          && (signupForm.controls.username.dirty)}">
+        <input formControlName="username" type="text" class="form-control" placeholder="Username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span *ngIf="signupForm.controls.username.errors?.required && signupForm.controls.username.dirty"
+              class="help-block">This field is required.</span>
       </div>
-      <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+      <div class="form-group has-feedback" [ngClass]="{'has-error': (signupForm.controls.email.errors)
+          && (signupForm.controls.email.dirty)}">
+        <input formControlName="email" type="email" class="form-control" placeholder="Email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <span *ngIf="signupForm.controls.email.errors?.required && signupForm.controls.email.dirty"
+              class="help-block">This field is required.</span>
+        <span *ngIf="signupForm.controls.email.errors?.email && signupForm.controls.email.dirty"
+              class="help-block">Please provide a valid email address.</span>
       </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+      <div class="form-group has-feedback" [ngClass]="{'has-error': (signupForm.controls.password.errors)
+          && (signupForm.controls.password.dirty)}">
+        <input formControlName="password" type="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <span *ngIf="signupForm.controls.password.errors?.required && signupForm.controls.password.dirty"
+              class="help-block">This field is required.</span>
       </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Retype password">
+      <div class="form-group has-feedback" [ngClass]="{'has-error': (signupForm.controls.confirmPassword.errors)
+          && (signupForm.controls.confirmPassword.dirty)}">
+        <input formControlName="confirmPassword" type="password" class="form-control" placeholder="Confirm password">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+        <span *ngIf="signupForm.controls.confirmPassword.errors?.required && signupForm.controls.confirmPassword.dirty"
+              class="help-block">This field is required.</span>
+        <span *ngIf="signupForm.controls.confirmPassword.errors?.MatchPassword && signupForm.controls.confirmPassword.dirty"
+              class="help-block">The passwords don't match.</span>
+      </div>
+
+      <div class="form-group has-feedback" [ngClass]="{'has-error': (signupForm.controls.role.errors)
+          && (signupForm.controls.role.touched)}">
+        <select formControlName="role" class="form-control" name="" id="">
+          <option value="" disabled selected>Select Role</option>
+          <option value="Worker">Worker</option>
+          <option value="Manager">Manager</option>
+        </select>
+        <span *ngIf="signupForm.controls.role.errors?.required && signupForm.controls.role.touched"
+              class="help-block">This field is required.</span>
+      </div>
+
+      <div class="form-group has-feedback">
+        <div>Current Value of the form: </div>
+        <div>{{signupForm.getRawValue() | json}}</div>
       </div>
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-12">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+          <button [disabled]="signupForm.invalid" type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
         </div>
         <!-- /.col -->
       </div>
