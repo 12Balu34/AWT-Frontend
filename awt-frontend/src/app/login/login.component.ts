@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
         error => {
           this.messageClass = 'alert alert-danger';
           this.message = error;
-          console.log(error);
         }
       )
   };
