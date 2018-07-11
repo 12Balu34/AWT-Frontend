@@ -48,8 +48,7 @@ export class AuthService {
       console.log(JSON.stringify(error));
     }
     // return an observable with a user-facing error message
-    return throwError(
-      error.error.message);
+    return throwError(error.error.message);
   }
 
   public isLoggedIn(): boolean {
