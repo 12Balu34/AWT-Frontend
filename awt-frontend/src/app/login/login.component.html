@@ -1,12 +1,14 @@
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>AWT</b>APP</a>
+    <b>AWT</b>APP
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
     <form [formGroup]="loginForm" (submit)="login()">
+      <div *ngIf="message" [ngClass]="messageClass">{{message}}</div>
+
       <div class="form-group has-feedback" [ngClass]="{'has-error': (loginForm.controls.username.errors)
           && (loginForm.controls.username.dirty)}">
         <input type="text" class="form-control form-control-success" placeholder="Username" formControlName="username" class="form-control">
