@@ -1,27 +1,27 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {backendBaseUrl} from "../../app-constants/backend-url";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs/internal/observable/throwError";
 import {LoginResponse} from "../../model/login-response";
+import {BackendUser} from "../../model/backend-user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private accessToken: string;
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
 
   public getAccessToken(): string {
-    return this.accessToken;
+    return localStorage.getItem('accessToken');
   }
 
   public setAccessToken(value: string) {
-    this.accessToken = value;
-  }
+    localStorage.setItem('accessToken', value);
+    }
 
   public login(userCredentials) {
     console.log('LoginService accessed ' + userCredentials.toString())
@@ -32,7 +32,18 @@ export class AuthService {
   }
 
   public logout() {
-    this.accessToken = null;
+    localStorage.removeItem('accessToken');
+  }
+
+  public isLoggedIn(): boolean {
+    return !(localStorage.getItem('accessToken') == null);
+  }
+
+  public getCurrentUser() {
+    return this.http.get<BackendUser>(backendBaseUrl + '/users/me')
+      .pipe(
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -51,9 +62,5 @@ export class AuthService {
       return throwError('The server is currently unavailable.' + '\n' + 'Please try again later.')
     }
     return throwError(error.error.message);
-  }
-
-  public isLoggedIn(): boolean {
-    return !(this.accessToken == null);
   }
 }
