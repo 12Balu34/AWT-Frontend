@@ -8,7 +8,6 @@ export class PasswordValidation {
       console.log('false');
       AC.get('confirmPassword').setErrors( {MatchPassword: true} )
     } else {
-      console.log('true');
       return null
     }
   }
