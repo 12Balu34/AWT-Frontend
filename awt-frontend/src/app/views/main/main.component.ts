@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
+import {User} from "../../model/user";
 
 @Component({
   selector: 'app-main',
@@ -8,10 +9,12 @@ import {Router} from "@angular/router";
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
+  user: User;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+    this.getCurrentUser();
   }
 
   private logout() {
@@ -20,5 +23,16 @@ export class MainComponent implements OnInit {
     if (!this.authService.isLoggedIn()) {
       this.router.navigateByUrl('/login');
     }
+  }
+
+  private getCurrentUser() {
+    this.authService.getCurrentUser()
+      .subscribe(
+        data => {
+          this.user = new User(data.username, data.email, data.password, data.roles[0].name);
+          console.log(JSON.stringify(this.user));
+        } ,
+        error => console.log(error)
+      )
   }
 }
