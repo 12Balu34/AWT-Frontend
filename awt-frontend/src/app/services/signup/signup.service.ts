@@ -33,6 +33,9 @@ export class SignupService {
       console.log(JSON.stringify(error));
     }
     // return an observable with a user-facing error message
+    if (error.status === 0) {
+      return throwError('The server is currently unavailable.' + '\n' + 'Please try again later.')
+    }
     return throwError(error.error.message);
   }
 }

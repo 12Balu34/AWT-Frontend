@@ -3,20 +3,22 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
-import { LoginComponent } from './login/login.component';
-import { MainComponent } from './main/main.component';
-import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './views/login/login.component';
+import { MainComponent } from './views/main/main.component';
+import { SignupComponent } from './views/signup/signup.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {httpInterceptorProviders} from "./http-interceptors";
 import {AuthService} from "./services/auth/auth.service";
 import {HttpClientModule} from "@angular/common/http";
+import { CreateCampaignComponent } from './views/main/create-campaign/create-campaign/create-campaign.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainComponent,
-    SignupComponent
+    SignupComponent,
+    CreateCampaignComponent
   ],
   imports: [
     BrowserModule,
