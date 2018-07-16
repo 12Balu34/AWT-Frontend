@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../services/auth/auth.service";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from "../services/auth/auth.service";
 import {Router} from "@angular/router";
-import {User} from "../../model/user";
+import {User} from "../model/user";
 
 @Component({
   selector: 'app-main',
@@ -26,13 +26,17 @@ export class MainComponent implements OnInit {
   }
 
   private getCurrentUser() {
-    this.authService.getCurrentUser()
-      .subscribe(
-        data => {
-          this.user = new User(data.username, data.email, data.password, data.roles[0].name);
-          console.log(JSON.stringify(this.user));
-        } ,
-        error => console.log(error)
-      )
+    if (this.authService.getCurrentUser()==null) {
+      this.authService.initializeGlobalUser()
+        .subscribe(
+          data => {
+            this.user = this.authService.getCurrentUser();
+            console.log(JSON.stringify(this.user));
+          } ,
+          error => console.log(error)
+        )
+      return;
+    } else this.user = this.authService.getCurrentUser();
   }
+
 }
