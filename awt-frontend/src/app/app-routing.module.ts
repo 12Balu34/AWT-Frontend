@@ -7,7 +7,7 @@ import {AuthGuardService} from "./services/authguard/auth-guard.service";
 import {EditUserComponent} from "./main/edit-user/edit-user.component";
 import {CreateCampaignComponent} from "./main/create-campaign/create-campaign.component";
 import {ManagedCampaignsComponent} from "./main/managed-campaigns/managed-campaigns.component";
-import {ManagerAuthguardService} from "./services/manager-auth/manager-authguard.service";
+import {ManagerAuthguardService} from "./services/manager-authguard/manager-authguard.service";
 
 
 const appRoutes: Routes = [
