@@ -28,12 +28,14 @@
               "src/assets/AdminLteResources/font-awesome/css/font-awesome.min.css",
               "src/assets/AdminLteResources/Ionicons/css/ionicons.min.css",
               "src/assets/AdminLteResources/dist/css/AdminLTE.min.css",
-              "src/assets/AdminLteResources/dist/css/skins/skin-blue.min.css"
+              "src/assets/AdminLteResources/dist/css/skins/skin-blue.min.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "src/assets/AdminLteResources/bootstrap/dist/js/bootstrap.min.js",
-              "src/assets/AdminLteResources/dist/js/adminlte.min.js"
+              "src/assets/AdminLteResources/dist/js/adminlte.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js"
             ]
           },
           "configurations": {

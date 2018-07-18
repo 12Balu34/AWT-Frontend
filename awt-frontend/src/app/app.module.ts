@@ -10,6 +10,7 @@ import {httpInterceptorProviders} from "./http-interceptors";
 import {AuthService} from "./services/auth/auth.service";
 import {HttpClientModule} from "@angular/common/http";
 import {MainModule} from "./main/main.module";
+import {CampaignService} from "./services/campaign/campaign.service";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {MainModule} from "./main/main.module";
   ],
   providers: [
     httpInterceptorProviders,
-    AuthService
+    AuthService,
+    CampaignService
   ],
   bootstrap: [AppComponent]
 })

@@ -38,10 +38,19 @@ export class AuthService {
   public logout() {
     this.user = null;
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('role');
   }
 
   public isLoggedIn(): boolean {
     return !(localStorage.getItem('accessToken') == null);
+  }
+
+  public getRole(): string {
+    return localStorage.getItem('role');
+  }
+
+  public isManager(): boolean {
+    return localStorage.getItem('role') == 'MANAGER';
   }
 
   public initializeGlobalUser () {
@@ -49,7 +58,7 @@ export class AuthService {
       .pipe(
         map(data=> {
           this.user = new User(data.username, data.email, data.password, data.roles[0].name);
-          console.log('user in authservice: ' + JSON.stringify(this.user));
+          localStorage.setItem('role',data.roles[0].name);
         },
         catchError(this.handleError)
       ));
