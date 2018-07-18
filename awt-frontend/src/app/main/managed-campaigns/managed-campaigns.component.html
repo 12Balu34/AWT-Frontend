@@ -1,0 +1,40 @@
+<div class="col-md-4" *ngIf="campaigns?.length == 0">
+  <div class="alert alert-warning">
+    <div *ngIf="isManager">
+      <p>You currently don't have any campaigns.</p>
+      <br>
+      <a routerLink="/home/create-campaign">Start by creating a new campaign.</a>
+    </div>
+
+    <div *ngIf="!isManager">
+      <p>There are currently no campaigns available.</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="campaigns?.length > 0">
+  <h4 *ngIf="isManager">My Campaigns</h4>
+  <h4 *ngIf="!isManager">Available campaigns</h4>
+  <br>
+  <div class="col-md-6">
+    <table datatable class="table table-striped">
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th *ngIf="!isManager">Enrol</th>
+      </tr>
+      </thead>
+      <tr *ngFor="let campaign of campaigns">
+        <th scope="row">{{campaign.id}}</th>
+        <td>{{campaign.name}}</td>
+        <td>{{campaign.campaignStatus | titlecase}}</td>
+        <td>{{campaign.startDate | date: 'dd.MM.yyyy'}}</td>
+        <td *ngIf="!isManager"><a>Enrol in campaign  <b>{{campaign.name}}</b></a></td>
+      </tr>
+    </table>
+  </div>
+  </div>
+
