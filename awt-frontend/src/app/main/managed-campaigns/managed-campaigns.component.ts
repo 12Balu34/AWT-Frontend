@@ -16,8 +16,8 @@ export class ManagedCampaignsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllCampaigns();
-    this.isManager = this.authService.isManager();
+    setTimeout(()=>this.initializeComponent(), 150)
+
   }
 
   private getAllCampaigns() {
@@ -27,5 +27,10 @@ export class ManagedCampaignsComponent implements OnInit {
           this.campaigns = data;
         }
       )
+  }
+
+  private initializeComponent() {
+    this.getAllCampaigns();
+    this.isManager = this.authService.isManager();
   }
 }
