@@ -13,13 +13,13 @@ import {ManagerAuthguardService} from "./services/manager-authguard/manager-auth
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent},
-  { path: 'home', component: MainComponent,  canActivate: [AuthGuardService],
+  { path: '', component: MainComponent,  canActivate: [AuthGuardService],
     children: [
       { path: 'profile', component: EditUserComponent,  canActivate: [AuthGuardService]},
       { path: 'create-campaign', component: CreateCampaignComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]},
       { path: 'campaigns', component: ManagedCampaignsComponent,  canActivate: [AuthGuardService]},
     ] },
-  { path: '',   redirectTo: '/login', pathMatch: 'full' }
+  { path: '',   redirectTo: '/campaigns', pathMatch: 'full' }
 ];
 
 @NgModule({
