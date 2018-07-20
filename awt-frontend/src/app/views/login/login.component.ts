@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
           this.authService.setAccessToken(data.tokenType + ' ' + data.accessToken);
           this.messageClass = 'alert alert-success';
           this.message = 'Login successful';
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/campaigns');
         },
         error => {
           this.messageClass = 'alert alert-danger';
