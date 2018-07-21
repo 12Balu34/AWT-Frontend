@@ -1,0 +1,156 @@
+
+
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Map page
+        <small>Campaign ADD ID LATER</small>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+
+
+      <!-- Main row -->
+      <div class="row">
+        <!-- Left col (We are only adding the ID to make the widgets sortable)-->
+        <section class="col-lg-10">
+
+          <!-- Map box -->
+          <div class="box box-solid bg-light-blue-gradient">
+            <div class="box-header">
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+
+                <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="remove"><i class="fa fa-times"></i>
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" data-widget="collapse"
+                        data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                  <i class="fa fa-minus"></i></button>
+              </div>
+              <!-- /. tools -->
+
+              <i class="fa fa-map-marker"></i>
+
+              <h3 class="box-title">
+                2D Map
+              </h3>
+            </div>
+            <div class="box-body">
+              <div *ngIf="options.layers.length -1 == peakList?.length" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)" id="leaflet-map" style="height: 500px; width: 100%;">
+              </div>
+            </div>
+             <!--/.box-body-->
+            <div class="box-footer no-border">
+              <div class="row">
+                <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-1"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-green.png" alt="">
+                    Not to be annotated
+                  </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-2"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-yellow.png" alt="">
+                    To be annotated
+                  </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-3"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-orange.png" alt="">
+                    Annotated
+                  </div>
+                </div>
+
+                <div class="col-xs-3 text-center">
+                  <div id="sparkline-4"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-red.png" alt="">
+                    Rejected
+                  </div>
+                </div>
+
+                <!-- ./col -->
+              </div>
+              <!-- /.row -->
+            </div>
+          </div>
+          <!-- /.box -->
+
+          <!-- solid sales graph -->
+          <div class="box box-solid bg-teal-gradient">
+            <div class="box-header">
+              <i class="fa fa-map-marker"></i>
+
+              <h3 class="box-title">3D Map</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body border-radius-none">
+              <div class="chart" id="line-chart" style="height: 250px;">
+                Cesium Map goes here
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-border">
+              <div class="row">
+                <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-7"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-green.png" alt="">
+                    Not to be annotated
+                  </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-8"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-yellow.png" alt="">
+                    To be annotated
+                  </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+                  <div id="sparkline-10"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-orange.png" alt="">
+                    Annotated
+                  </div>
+                </div>
+
+                <div class="col-xs-3 text-center">
+                  <div id="sparkline-11"></div>
+                  <div class="knob-label">
+                    <img class="peak-marker-legend" src="assets/marker-icon-red.png" alt="">
+                    Rejected
+                  </div>
+                </div>
+
+                <!-- ./col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+
+        </section>
+        <!-- Left col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+    <!-- /.content -->
