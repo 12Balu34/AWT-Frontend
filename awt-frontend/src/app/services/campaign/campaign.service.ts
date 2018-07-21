@@ -4,6 +4,7 @@ import {backendBaseUrl} from "../../app-constants/backend-url";
 import {CreateCampaignRequest} from "../../model/create-campaign-request";
 import {throwError} from "rxjs/internal/observable/throwError";
 import {Campaign} from "../../model/campaign";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,13 @@ export class CampaignService {
 
   public getAllCampaigns(){
     return this.http.get<Campaign[]>(backendBaseUrl + '/campaigns')
+  }
 
+  public getSingleCampaign(id: string){
+    return this.http.get<Campaign>(backendBaseUrl+ '/campaigns/' + id)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   private handleError (error: HttpErrorResponse) {
@@ -35,5 +42,9 @@ export class CampaignService {
     }
     // return an observable with a user-facing error message
     return throwError(error.error.message);
+  }
+
+  updateCampaignStatus(campaignId: string) {
+    return this.http.patch(backendBaseUrl + '/campaigns/' + campaignId, null);
   }
 }
