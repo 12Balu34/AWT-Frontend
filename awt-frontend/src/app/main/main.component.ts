@@ -31,7 +31,6 @@ export class MainComponent implements OnInit {
         .subscribe(
           data => {
             this.user = this.authService.getCurrentUser();
-            console.log(JSON.stringify(this.user));
           } ,
           error => console.log(error)
         )

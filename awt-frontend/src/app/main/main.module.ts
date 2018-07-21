@@ -9,6 +9,7 @@ import {ManagedCampaignsComponent} from './managed-campaigns/managed-campaigns.c
 import {DataTablesModule} from "angular-datatables";
 import {ManagerSidebarComponent} from './manager-sidebar/manager-sidebar.component';
 import {WorkerSidebarComponent} from './worker-sidebar/worker-sidebar.component';
+import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import {WorkerSidebarComponent} from './worker-sidebar/worker-sidebar.component'
     CreateCampaignComponent,
     ManagedCampaignsComponent,
     ManagerSidebarComponent,
-    WorkerSidebarComponent
+    WorkerSidebarComponent,
+    CampaignDetailsComponent
   ]
 })
 export class MainModule { }
