@@ -28,7 +28,6 @@ export class AuthService {
     }
 
   public login(userCredentials) {
-    console.log('LoginService accessed ' + userCredentials.toString())
     return this.http.post<LoginResponse>(backendBaseUrl +'/auth/signin', userCredentials)
       .pipe(
         catchError(this.handleError)
