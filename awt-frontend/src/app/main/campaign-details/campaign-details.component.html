@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-md-6">
+
+    <div *ngIf="statusUpdateMessage" [ngClass]="statusUpdateMessageClass">
+      <button (click)="resetMessages()" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <h4><i class="icon fa fa-info"></i>Information:</h4>
+      {{statusUpdateMessage}}
+    </div>
+
+    <div *ngIf="message" [ngClass]="messageClass">
+      <button (click)="resetMessages()" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <h4><i class="icon fa fa-info"></i>Information:</h4>
+      {{message}}
+    </div>
+
+    <div *ngIf="uploadMessage" [ngClass]="uploadMessageClass">
+      <button (click)="resetMessages()" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <h4><i class="icon fa fa-info"></i>Information:</h4>
+      {{uploadMessage}}
+    </div>
+
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <i class="fa fa-laptop"></i>
+
+        <h3 class="box-title">Campaign details</h3>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <div *ngIf="campaign">
+          <p><span class="lead">Id: </span>{{campaign.id}}</p>
+          <p><span class="lead">Name:</span>{{campaign.name}}</p>
+          <p *ngIf="campaign.startDate"> <span class="lead">Start date: </span>{{campaign.startDate | date: 'dd.MM.yyyy'}}</p>
+          <p><span class="lead">Status: </span>{{campaign.campaignStatus | titlecase}}</p>
+        </div>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+  <!-- /.col -->
+
+  <div class="col-md-6">
+    <!-- Custom Tabs -->
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="pull-left header"><i class="fa fa-clogs"></i>Settings</li>
+        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Upload peaks</a></li>
+        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Update status</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+          <form *ngIf="campaign?.campaignStatus == 'CREATED'" [formGroup]="uploadPeaksForm" (submit)="uploadDocument()">
+            <input formControlName="peakFile" type="file" (change)="handleFileInput($event.target.files)">
+            <div class="form-group">
+              <div class="checkbox">
+                <label>
+                  <input formControlName="isToBeAnnotated" type="checkbox">
+                  To be annotated
+                </label>
+              </div>
+            </div>
+            <button [disabled]="!uploadPeaksForm.valid" type="submit" class="btn btn-primary">Upload</button>
+          </form>
+
+          <div *ngIf="!(campaign?.campaignStatus == 'CREATED')">
+            Peaks can only be uploaded when the campaign is in the <b>Created</b> state.
+          </div>
+        </div>
+
+
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2">
+          <div>
+            <button (click)="startCampaign()" class="btn btn-success" *ngIf="campaign?.campaignStatus == 'CREATED'">Start Campaign</button>
+            <button (click)="closeCampaign()" class="btn btn-danger" *ngIf="campaign?.campaignStatus == 'STARTED'">Close Campaign</button>
+            <p *ngIf="(campaign?.campaignStatus == 'CLOSED')">This campaign is already closed.</p>
+          </div>
+        </div>
+        <!-- /.tab-pane -->
+
+      </div>
+      <!-- /.tab-content -->
+    </div>
+    <!-- nav-tabs-custom -->
+  </div>
+</div>
