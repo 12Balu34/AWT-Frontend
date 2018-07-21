@@ -1,4 +1,4 @@
-<div class="col-md-4" *ngIf="campaigns?.length == 0">
+<div class="col-md-3" *ngIf="campaigns?.length == 0">
   <div class="alert alert-warning">
     <div *ngIf="isManager">
       <p>You currently don't have any campaigns.</p>
@@ -12,29 +12,35 @@
   </div>
 </div>
 
-<div *ngIf="campaigns?.length > 0">
-  <h4 *ngIf="isManager">My Campaigns</h4>
-  <h4 *ngIf="!isManager">Available campaigns</h4>
-  <br>
-  <div class="col-md-6">
-    <table datatable class="table table-striped">
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Start Date</th>
-        <th *ngIf="!isManager">Enrol</th>
-      </tr>
-      </thead>
-      <tr *ngFor="let campaign of campaigns">
-        <th scope="row">{{campaign.id}}</th>
-        <td>{{campaign.name}}</td>
-        <td>{{campaign.campaignStatus | titlecase}}</td>
-        <td>{{campaign.startDate | date: 'dd.MM.yyyy'}}</td>
-        <td *ngIf="!isManager"><a>Enrol in campaign  <b>{{campaign.name}}</b></a></td>
-      </tr>
-    </table>
+<div *ngIf="campaigns?.length > 0" class="box box-primary">
+  <div class="box-header">
+    <h3 *ngIf="isManager" class="box-title">My Campaigns</h3>
+    <h3 *ngIf="!isManager" class="box-title">Available campaigns</h3>
   </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <div class="dataTables_wrapper form-inline ">
+      <table datatable class="table table-bordered table-striped dataTable">
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Start Date</th>
+          <th *ngIf="isManager">Details</th>
+          <th *ngIf="!isManager">Enrol</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let campaign of campaigns">
+          <th scope="row">{{campaign.id}}</th>
+          <td>{{campaign.name}}</td>
+          <td>{{campaign.campaignStatus | titlecase}}</td>
+          <td>{{campaign.startDate | date: 'dd.MM.yyyy'}}</td>
+          <td><a routerLink="/campaigns/{{campaign.id}}">View details</a></td>
+          <td *ngIf="!isManager"><a>Enrol in campaign <b>{{campaign.name}}</b></a></td>
+        </tr>
+      </table>
+    </div>
+  <!-- /.box-body -->
   </div>
-
+</div>
