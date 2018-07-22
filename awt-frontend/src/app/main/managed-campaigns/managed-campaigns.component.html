@@ -20,7 +20,7 @@
   <!-- /.box-header -->
   <div class="box-body">
     <div class="dataTables_wrapper form-inline ">
-      <table datatable class="table table-bordered table-striped dataTable">
+      <table datatable class="table table-bordered table-striped">
         <thead>
         <tr>
           <th>Id</th>
@@ -36,8 +36,8 @@
           <td>{{campaign.name}}</td>
           <td>{{campaign.campaignStatus | titlecase}}</td>
           <td>{{campaign.startDate | date: 'dd.MM.yyyy'}}</td>
-          <td><a routerLink="/campaigns/{{campaign.id}}">View details</a></td>
-          <td *ngIf="!isManager"><a>Enrol in campaign <b>{{campaign.name}}</b></a></td>
+          <td *ngIf="isManager"><a routerLink="/campaigns/{{campaign.id}}">View details</a></td>
+          <td *ngIf="!isManager"><a>Enrol in campaign</a></td>
         </tr>
       </table>
     </div>

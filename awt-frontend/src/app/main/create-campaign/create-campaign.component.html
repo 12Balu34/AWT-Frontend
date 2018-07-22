@@ -1,38 +1,50 @@
-<div class="row">
-  <div class="col-md-4">
-    <div *ngIf="message" [ngClass]="messageClass">{{message}}</div>
+<section class="content-header">
+  <h1>
+    Create a new campaign
+    <small></small>
+  </h1>
+</section>
 
+<section class="content">
+
+  <div class="row">
+    <div class="col-md-4">
+      <div *ngIf="message" [ngClass]="messageClass">{{message}}</div>
+
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-md-4">
-  <div class="box box-primary">
-    <div class="box-header with-border">
-      <h3 class="box-title">Create Campaign</h3>
-      <div class="box-body">
-        <form [formGroup]="createCampaignForm" (submit)="createCampaign()">
-          <div class="form-group has-feedback" [ngClass]="{'has-error': (createCampaignForm.controls.name.errors)
+  <div class="row">
+    <div class="col-md-4">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Enter Campaign Name</h3>
+          <div class="box-body">
+            <form [formGroup]="createCampaignForm" (submit)="createCampaign()">
+              <div class="form-group has-feedback" [ngClass]="{'has-error': (createCampaignForm.controls.name.errors)
         && (createCampaignForm.controls.name.dirty)}">
-            <input type="text" class="form-control form-control-success" placeholder="Campaign Name"
-                   formControlName="name" class="form-control">
-            <span class="fa fa-plus form-control-feedback"></span>
-            <span *ngIf="createCampaignForm.controls.name.errors?.required && createCampaignForm.controls.name.dirty"
+                <input type="text" class="form-control form-control-success" placeholder="Campaign Name"
+                       formControlName="name" class="form-control">
+                <span class="fa fa-plus form-control-feedback"></span>
+                <span
+                  *ngIf="createCampaignForm.controls.name.errors?.required && createCampaignForm.controls.name.dirty"
                   class="help-block">This field is required.</span>
-          </div>
+              </div>
 
-          <div class="row">
-            <!-- /.col -->
-            <div class="col-xs-12 ">
-              <button [disabled]="!createCampaignForm.valid" type="submit" class="btn btn-primary btn-block btn-flat">
-                Create Campaign
-              </button>
-            </div>
-            <!-- /.col -->
+              <div class="row">
+                <!-- /.col -->
+                <div class="col-xs-12 ">
+                  <button [disabled]="!createCampaignForm.valid" type="submit"
+                          class="btn btn-primary btn-block btn-flat">
+                    Create Campaign
+                  </button>
+                </div>
+                <!-- /.col -->
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-</div>
+</section>
