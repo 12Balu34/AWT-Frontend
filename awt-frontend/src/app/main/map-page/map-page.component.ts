@@ -14,6 +14,7 @@ import {TSMap} from "typescript-map";
   styleUrls: ['./map-page.component.css']
 })
 export class MapPageComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
   private peakListObservable: Observable<Peak[]>
   private peakList: Peak [];
   private baselayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: 'Open Street Map' });
@@ -35,7 +36,9 @@ export class MapPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
+    this.dtOptions = {
+      pageLength: 2
+    };
   }
   onMapReady(map: Map) {
     this.map = map;
@@ -55,17 +58,21 @@ export class MapPageComponent implements OnInit {
     let marker = L.marker(
       [peak.latitude, peak.longitude],
       {
-        icon: icon({
-        iconUrl: 'assets/marker-icon-' + color + '.png',
-        shadowUrl: 'assets/marker-shadow.png'
-      }),
-      title: peak.id.toString(),
-      clickable: true
+        icon: this.iconBuilder(this.resolveMarkerColor(peak)),
+        title: peak.id.toString(),
+        clickable: true
       })
       .on('click', this.onMarkerClick, this)
-      .addTo(this.map)
+      .addTo(this.map);
 
       this.mapMarkers.set(peak.id.toString(), marker);
+  }
+
+  updateRejectedMarkerColor(peakId: string) {
+    this.mapMarkers.get(peakId)
+      .setIcon(
+        this.iconBuilder(MarkerColors.Red)
+      );
   }
 
   private resolveMarkerColor(peak: Peak): MarkerColors {
@@ -78,10 +85,10 @@ export class MapPageComponent implements OnInit {
       return MarkerColors.Yellow;
     }
     if(annotationsLenght > 0 && peak.toBeAnnotated) {
-      return MarkerColors.Orange;
-    }
-    if (peak.hasConflict()) {
-      return MarkerColors.Red;
+      if(this.hasRejectedAnnotations(peak)) {
+        return MarkerColors.Red;
+      }
+      else return MarkerColors.Orange;
     }
     return MarkerColors.Blue;
   }
@@ -123,7 +130,28 @@ export class MapPageComponent implements OnInit {
     for(let peak of this.peakList) {
       if (peak.id == peakId) {
         this.selectedPeak = peak;
+        console.log(this.selectedPeak);
       }
     }
+  }
+
+  rejectAnnotation(peakId: number, annotationId: number) {
+    this.updateRejectedMarkerColor(peakId.toString());
+    //TODO: post change to backend
+  }
+
+  public hasRejectedAnnotations(peak: Peak): boolean {
+    if (peak.annotations.length == 0) {
+      return false;
+    }
+
+    //check if rejected annotations exist
+    for (let annotation of peak.annotations) {
+      if(!annotation.acceptedByManager) {
+        return true;
+      };
+    }
+    //no rejected annotations exist if loop finished without returning
+    return false;
   }
 }
