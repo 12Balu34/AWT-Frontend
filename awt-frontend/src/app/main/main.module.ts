@@ -9,14 +9,18 @@ import {ManagedCampaignsComponent} from './managed-campaigns/managed-campaigns.c
 import {DataTablesModule} from "angular-datatables";
 import {ManagerSidebarComponent} from './manager-sidebar/manager-sidebar.component';
 import {WorkerSidebarComponent} from './worker-sidebar/worker-sidebar.component';
-import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
+import {CampaignDetailsComponent} from './campaign-details/campaign-details.component';
+import {MapPageComponent} from './map-page/map-page.component';
+import {CampaignStatisticsComponent} from './campaign-statistics/campaign-statistics.component';
+import {LeafletModule} from "@asymmetrik/angular2-leaflet";
 
 @NgModule({
   imports: [
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    DataTablesModule
+    DataTablesModule,
+    LeafletModule
   ],
   declarations: [
     MainComponent,
@@ -25,7 +29,9 @@ import { CampaignDetailsComponent } from './campaign-details/campaign-details.co
     ManagedCampaignsComponent,
     ManagerSidebarComponent,
     WorkerSidebarComponent,
-    CampaignDetailsComponent
+    CampaignDetailsComponent,
+    MapPageComponent,
+    CampaignStatisticsComponent
   ]
 })
 export class MainModule { }
