@@ -9,6 +9,8 @@ import {CreateCampaignComponent} from "./main/create-campaign/create-campaign.co
 import {ManagedCampaignsComponent} from "./main/managed-campaigns/managed-campaigns.component";
 import {ManagerAuthguardService} from "./services/manager-authguard/manager-authguard.service";
 import {CampaignDetailsComponent} from "./main/campaign-details/campaign-details.component";
+import {MapPageComponent} from "./main/map-page/map-page.component";
+import {CampaignStatisticsComponent} from "./main/campaign-statistics/campaign-statistics.component";
 
 
 const appRoutes: Routes = [
@@ -20,7 +22,10 @@ const appRoutes: Routes = [
       { path: 'create-campaign', component: CreateCampaignComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]},
       { path: 'campaigns', component: ManagedCampaignsComponent,  canActivate: [AuthGuardService]},
       { path: 'campaigns/:id', component: CampaignDetailsComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]},
-    ] },
+      { path: 'campaigns/:id/map', component: MapPageComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]},
+      { path: 'campaigns/:id/statistics', component: CampaignStatisticsComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]}
+    ]
+  },
   { path: '',   redirectTo: '/campaigns', pathMatch: 'full' }
 ];
 
