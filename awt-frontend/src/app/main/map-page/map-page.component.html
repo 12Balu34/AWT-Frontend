@@ -17,7 +17,7 @@
       <!-- Main row -->
       <div class="row">
         <!-- Left col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-10">
+        <section class="col-lg-8">
 
           <!-- Map box -->
           <div class="box box-solid bg-light-blue-gradient">
@@ -40,7 +40,7 @@
               </h3>
             </div>
             <div class="box-body">
-              <div *ngIf="options.layers.length -1 == peakList?.length" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)" id="leaflet-map" style="height: 500px; width: 100%;">
+              <div leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)" id="leaflet-map" style="height: 500px; width: 100%;">
               </div>
             </div>
              <!--/.box-body-->
@@ -149,8 +149,52 @@
 
         </section>
         <!-- Left col -->
+        <section class="col-lg-4">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <i class="fa"></i>
+
+              <h3 class="box-title">Peak details</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <p *ngIf="!selectedPeak">Select a peak in the map to view details</p>
+              <div *ngIf="selectedPeak">
+                <p>Id: {{selectedPeak.id}}</p>
+                <p>Name: {{selectedPeak.name}}</p>
+                <p>Latitude: {{selectedPeak.latitude}}</p>
+                <p>Longitude: {{selectedPeak.longitude}}</p>
+                <p>Elevation: {{selectedPeak.elevation}}</p>
+                <p>Localized names:</p>
+                <p *ngIf="selectedPeak.localized_names.length == 0">None</p>
+                <div>
+                  <ul>
+                    <li *ngFor="let localizedName of selectedPeak.localized_names">{{localizedName[1]}} ({{localizedName[0]}})</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <i class="fa"></i>
+
+              <h3 class="box-title">Annotations</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+
+        </section>
       </div>
       <!-- /.row (main row) -->
 
     </section>
+
     <!-- /.content -->
