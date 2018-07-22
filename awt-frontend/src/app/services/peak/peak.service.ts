@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {backendBaseUrl} from "../../app-constants/backend-url";
+import {Peak} from "../../model/Peak";
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,10 @@ export class PeakService {
       annotate='?annotate=false';
     }
     return this.http.post(backendBaseUrl + '/campaigns/'+ campaignId +'/peaks' + annotate, input);
+  }
+
+  public getAllPeaks(campaignId: string) {
+    console.log('getAllPeaks accessed with campaignId: ' + campaignId)
+    return this.http.get<Peak[]>(backendBaseUrl + '/campaigns/'+ campaignId +'/peaks');
   }
 }
