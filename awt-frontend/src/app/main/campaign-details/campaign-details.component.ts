@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {CampaignService} from "../../services/campaign/campaign.service";
 import {Campaign} from "../../model/campaign";
 import {Observable} from "rxjs/internal/Observable";
@@ -85,8 +85,13 @@ export class CampaignDetailsComponent implements OnInit {
     response.subscribe(
       data => {
         this.uploadMessage = data.message;
-        this.uploadMessageClass = 'alert alert-success'
-        //TODO: route to Map page
+        this.uploadMessageClass = 'alert alert-success';
+        setTimeout(
+          ()=> {
+            this.router.navigateByUrl('/campaigns/' + this.campaign.id.toString() + '/map')
+          },
+          1000
+        )
       },
       error => {
         this.uploadMessage = error.error.message;
