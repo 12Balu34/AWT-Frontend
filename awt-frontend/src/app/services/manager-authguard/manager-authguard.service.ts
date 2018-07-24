@@ -14,7 +14,7 @@ export class ManagerAuthguardService implements CanActivate{
       return true;
     }
     else {
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/campaigns');
       return false;
     }
   }
