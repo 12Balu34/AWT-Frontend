@@ -2,18 +2,15 @@
 <section class="content-header">
   <h1>
     Map page
-    <small>Campaign ADD ID LATER</small>
+    <small></small>
   </h1>
 </section>
 
 <!-- Main content -->
 <section class="content">
-
-
   <!-- Main row -->
   <div class="row">
-    <!-- Left col (We are only adding the ID to make the widgets sortable)-->
-    <section class="col-lg-12">
+    <div class="col-lg-12">
 
       <!-- Map box -->
       <div class="box box-solid bg-light-blue-gradient">
@@ -37,8 +34,6 @@
           </h3>
         </div>
         <div class="box-body">
-
-
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">2D</a></li>
@@ -101,7 +96,8 @@
           <!-- /.row -->
         </div>
       </div>
-      <!-- /.box -->
+
+      <!--Peak/ Annotation Box-->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
           <li class="pull-left header"><i class="fa fa-map-marker"></i>Details</li>
@@ -109,9 +105,9 @@
           <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="false">Annotations</a></li>
         </ul>
         <div class="tab-content">
+          <!--Peak Tab-->
           <div class="tab-pane active" id="tab_3">
             <p *ngIf="!selectedPeak">Select a peak in the map to view details</p>
-
             <table *ngIf="selectedPeak" class="table table-bordered">
               <tbody>
               <tr>
@@ -138,17 +134,33 @@
               </tr>
               </tbody>
             </table>
-
           </div>
-          <!-- /.tab-pane -->
-          <div class="tab-pane" id="tab_4">
-            <p *ngIf="!selectedPeak">Select a peak in the map to view its annotations</p>
 
-            <div *ngIf="selectedPeak">
-              <p *ngIf="selectedPeak.annotations?.length == 0">No Annotations available for the selected peak</p>
-              <div *ngIf="selectedPeak.annotations?.length > 0">
-                <table datatable [dtOptions]="dtOptions" class="table table-bordered table-striped">
-                  <thead>
+          <!--Annotation Tab-->
+          <div class="tab-pane" id="tab_4">
+            <!--Message div-->
+            <div class="row">
+              <div class="col-md-4">
+
+                <div *ngIf="message" [ngClass]="messageClass">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                  </button>
+                  <h4><i class="icon fa fa-info"></i>Information:</h4>
+                  {{message}}
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Manager view -->
+            <div *ngIf="isManager">
+              <p *ngIf="!selectedPeak">Select a peak in the map to view its annotations</p>
+
+              <div *ngIf="selectedPeak">
+                <p *ngIf="selectedPeak.annotations?.length == 0">No Annotations available for the selected peak</p>
+                <div *ngIf="selectedPeak.annotations?.length > 0">
+                  <table datatable [dtOptions]="dtOptions" class="table table-bordered table-striped">
+                    <thead>
                     <tr>
                       <th>Annotation Id</th>
                       <th>Created date</th>
@@ -161,76 +173,123 @@
                       <th>Accept</th>
                       <th>Reject</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let annotation of selectedPeak.annotations">
-                    <td>{{annotation.id}}</td>
-                    <td>{{annotation.creationDateTime | date: 'dd.MM.yyyy'}}</td>
-                    <td>{{annotation.name}}</td>
-                    <td>{{annotation.elevation}}</td>
-                    <td>
-                      <p *ngIf="annotation.localized_names">None</p>
-                      <ul *ngIf="annotation.localized_names">
-                        <li *ngFor="let localizedName of annotation.localized_names">{{localizedName[1]}}
-                          ({{localizedName[0]}})
-                        </li>
-                      </ul>
-                    </td>
-                    <td>{{annotation.worker.username}}</td>
-                    <td>{{annotation.valid}}</td>
-                    <td>{{annotation.acceptedByManager}}</td>
-                    <td>
-                      <button>Accept</button>
-                    </td>
-                    <td>
-                      <button (click)="rejectAnnotation(selectedPeak.id, annotation.id)">Reject</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <!-- /.tab-pane -->
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let annotation of selectedPeak.annotations">
+                      <td>{{annotation.id}}</td>
+                      <td>{{annotation.creationDateTime | date: 'dd.MM.yyyy'}}</td>
+                      <td>{{annotation.name}}</td>
+                      <td>{{annotation.elevation}}</td>
+                      <td>
 
-        </div>
-        <!-- /.tab-content -->
-      </div>
-    </section>
-    <!-- Left col -->
-    <!--    <section class="col-lg-4">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <i class="fa"></i>
+                        <div *ngIf="annotation.localized_names?.length > 0">
+                          <ul>
+                            <div *ngFor="let localizedName of annotation.localized_names">
+                            <li *ngIf="localizedName[0]?.length > 0">
+                              {{localizedName[1]}} ({{localizedName[0]}})
+                            </li>
+                            </div>
+                          </ul>
+                        </div>
 
-              <h3 class="box-title">Peak details</h3>
-            </div>
-            &lt;!&ndash; /.box-header &ndash;&gt;
-            <div class="box-body">
-              <p *ngIf="!selectedPeak">Select a peak in the map to view details</p>
-              <div *ngIf="selectedPeak">
-                <p>Id: {{selectedPeak.id}}</p>
-                <p>Name: {{selectedPeak.name}}</p>
-                <p>Latitude: {{selectedPeak.latitude}}</p>
-                <p>Longitude: {{selectedPeak.longitude}}</p>
-                <p>Elevation: {{selectedPeak.elevation}}</p>
-                <p>Localized names:</p>
-                <p *ngIf="selectedPeak.localized_names.length == 0">None</p>
-                <div>
-                  <ul>
-                    <li *ngFor="let localizedName of selectedPeak.localized_names">{{localizedName[1]}}
-                      ({{localizedName[0]}})
-                    </li>
-                  </ul>
+                      </td>
+                      <td>{{annotation.worker.username}}</td>
+                      <td>{{annotation.valid}}</td>
+                      <td>{{annotation.acceptedByManager}}</td>
+                      <td>
+                        <button>Accept</button>
+                      </td>
+                      <td>
+                        <button (click)="rejectAnnotation(selectedPeak.id, annotation.id)">Reject</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-            &lt;!&ndash; /.box-body &ndash;&gt;
+
+            <!-- Worker view -->
+            <div *ngIf="!isManager">
+              <p *ngIf="!selectedPeak">Select a peak in the map to annotate it</p>
+
+              <form *ngIf="selectedPeak" [formGroup]="annotationForm">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input formControlName="valid" type="radio" id="optionsRadios1"
+                             value="true" [checked]="true">
+                      Mark Peak as valid
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input formControlName="valid" type="radio" id="optionsRadios2"
+                             value="false">
+                      Mark Peak as invalid
+                    </label>
+                  </div>
+                </div>
+
+                <div *ngIf="annotationForm.controls.valid.value =='false'">
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input formControlName="name" type="text" class="form-control" placeholder="Name">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input formControlName="elevation" type="text" class="form-control" placeholder="Elevation">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div formArrayName="localizedNames"
+                         *ngFor="let localizedName of annotationForm.get('localizedNames').controls; let i = index;">
+                      <div [formGroupName]="i">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <input class="form-control" formControlName="name" placeholder="Localized name">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <input class="form-control" formControlName="language" placeholder="Language">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="annotationForm.controls.valid.value =='false'">
+                  <button (click)="addLocalizedName()" type="button" class="btn btn-primary btn-sm"
+                          style="margin-right: 5px; ">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                  <button (click)="removeLastLocalizedName()" type="button" class="btn btn-warning btn-sm"
+                          style="margin-right: 5px;">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                  <span>Add/ Remove localized names</span>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <br>
+                    <button (click)="createAnnotation()"
+                            [disabled]="annotationForm.controls.valid.value =='false' && annotationForm.invalid"
+                            class="btn btn-primary">Submit
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-        </section>-->
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- /.row (main row) -->
-
 </section>
-
-<!-- /.content -->

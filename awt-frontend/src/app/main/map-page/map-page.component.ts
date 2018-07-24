@@ -7,6 +7,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PeakService} from "../../services/peak/peak.service";
 import {Observable} from "rxjs/internal/Observable";
 import {TSMap} from "typescript-map";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../services/auth/auth.service";
+import {AnnotationService} from "../../services/annotation/annotation.service";
+import {AnnotationBase} from "../../model/Annotation";
+import {MessageTimeout} from "../../app-constants/messageTimeout";
 
 @Component({
   selector: 'app-map-page',
@@ -14,13 +19,23 @@ import {TSMap} from "typescript-map";
   styleUrls: ['./map-page.component.css']
 })
 export class MapPageComponent implements OnInit {
-  dtOptions: DataTables.Settings = {};
+  private dtOptions: DataTables.Settings = {};
+  private isManager;
+
+  private campaignId: string;
   private peakListObservable: Observable<Peak[]>
   private peakList: Peak [];
+  private selectedPeak: Peak;
+
+  private annotationForm: FormGroup;
+  private localizedNames: FormArray;
+
   private baselayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: 'Open Street Map' });
-  map: L.Map;
-  selectedPeak: Peak
-  mapMarkers = new TSMap<string, L.Marker>()
+  private map: L.Map;
+  private mapMarkers = new TSMap<string, L.Marker>();
+
+  private message: string;
+  private messageClass: string;
 
 
   options = {
@@ -33,12 +48,35 @@ export class MapPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private peakService: PeakService,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private annotationService: AnnotationService
   ) {}
 
   ngOnInit() {
+    this.isManager = this.authService.isManager();
     this.dtOptions = {
       pageLength: 2
     };
+    this.createForm();
+  }
+
+  private createForm(){
+    this.annotationForm = this.formBuilder.group({
+      valid: [true, Validators.required],
+      name: ['', Validators.required],
+      elevation: ['', Validators.required],
+      localizedNames: this.formBuilder.array([this.createLocalizedName()])
+    });
+    this.localizedNames = this.annotationForm.get('localizedNames') as FormArray;
+  }
+
+
+  private createLocalizedName(): FormGroup {
+    return this.formBuilder.group({
+      name: ['', Validators.required],
+      language: ['', Validators.required]
+    })
   }
   onMapReady(map: Map) {
     this.map = map;
@@ -74,6 +112,12 @@ export class MapPageComponent implements OnInit {
         this.iconBuilder(MarkerColors.Red)
       );
   }
+  updateAnnotatedMarkerColor(peakId: string) {
+    this.mapMarkers.get(peakId)
+      .setIcon(
+        this.iconBuilder(MarkerColors.Orange)
+      );
+  }
 
   private resolveMarkerColor(peak: Peak): MarkerColors {
     let annotationsLenght: number = peak.annotations.length;
@@ -105,7 +149,8 @@ export class MapPageComponent implements OnInit {
   private getPeakListObservable(){
     this.activatedRoute.paramMap.subscribe(
       data=> {
-        this.peakListObservable = this.peakService.getAllPeaks(data.get('id'));
+        this.campaignId = data.get('id');
+        this.peakListObservable = this.peakService.getAllPeaks(this.campaignId);
       }
     )
   }
@@ -130,7 +175,6 @@ export class MapPageComponent implements OnInit {
     for(let peak of this.peakList) {
       if (peak.id == peakId) {
         this.selectedPeak = peak;
-        console.log(this.selectedPeak);
       }
     }
   }
@@ -147,11 +191,65 @@ export class MapPageComponent implements OnInit {
 
     //check if rejected annotations exist
     for (let annotation of peak.annotations) {
-      if(!annotation.acceptedByManager) {
+      if(annotation.acceptedByManager != null && !annotation.acceptedByManager) {
         return true;
       };
     }
     //no rejected annotations exist if loop finished without returning
     return false;
+  }
+
+
+  private addLocalizedName() {
+    this.localizedNames.push(this.createLocalizedName());
+    this.convertLocalizedPeaksToStringArray();
+  }
+
+  removeLastLocalizedName(){
+    this.localizedNames.removeAt(this.localizedNames.length-1);
+  }
+
+  convertLocalizedPeaksToStringArray(): Array<string[]> {
+    if(this.localizedNames.length == 0) {
+      return null;
+    }
+    let tempArray = new Array<string[]>();
+
+    for(let i = 0; i <this.localizedNames.length; i++) {
+      let tempArrayComponent: string [] = new Array();
+      tempArrayComponent.push(this.localizedNames.at(i).get('language').value);
+      tempArrayComponent.push(this.localizedNames.at(i).get('name').value);
+      tempArray.push(tempArrayComponent);
+    }
+    return tempArray;
+  }
+
+  createAnnotation(){
+    const annotation: AnnotationBase = new AnnotationBase(
+      this.annotationForm.get('name').value,
+      +this.annotationForm.get('elevation').value,
+      this.convertLocalizedPeaksToStringArray(),
+      this.annotationForm.get('valid').value == true
+    );
+
+    this.annotationService.createAnnotation(+this.campaignId, this.selectedPeak.id, annotation)
+      .subscribe(
+        data => {
+          this.message = data.message;
+          this.messageClass = 'alert alert-success alert-dismissible';
+          setTimeout(()=>this.resetMessage(), MessageTimeout);
+          this.updateAnnotatedMarkerColor(this.selectedPeak.id.toString());
+        },
+        error => {
+          this.message = error;
+          this.messageClass = 'alert alert-danger alert-dismissible';
+          setTimeout(()=>this.resetMessage(), MessageTimeout)
+        }
+      )
+  }
+
+  private resetMessage() {
+    this.messageClass = null;
+    this.message = null;
   }
 }
