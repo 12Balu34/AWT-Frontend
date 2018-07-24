@@ -5,6 +5,7 @@ import {CreateCampaignRequest} from "../../model/create-campaign-request";
 import {throwError} from "rxjs/internal/observable/throwError";
 import {Campaign} from "../../model/campaign";
 import {catchError} from "rxjs/operators";
+import {ApiResponse} from "../../model/api-response";
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +47,13 @@ export class CampaignService {
 
   updateCampaignStatus(campaignId: string) {
     return this.http.patch(backendBaseUrl + '/campaigns/' + campaignId, null);
+  }
+
+  getEnrolledCampaigns() {
+    return this.http.get<Campaign[]>(backendBaseUrl + '/campaigns?enrolled=true')
+  }
+
+  enrollInCampaign(campaignId: number) {
+    return this.http.post<ApiResponse>(backendBaseUrl + '/campaigns/' + campaignId, null);
   }
 }
