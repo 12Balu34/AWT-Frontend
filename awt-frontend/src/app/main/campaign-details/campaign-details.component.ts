@@ -5,6 +5,7 @@ import {Campaign} from "../../model/campaign";
 import {Observable} from "rxjs/internal/Observable";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PeakService} from "../../services/peak/peak.service";
+import {MessageTimeout} from "../../app-constants/messageTimeout";
 
 @Component({
   selector: 'app-campaign-details',
@@ -105,7 +106,8 @@ export class CampaignDetailsComponent implements OnInit {
       .subscribe(
         data => {
           this.statusUpdateMessage = "Status updated to Started";
-          this.statusUpdateMessageClass = 'alert alert-success alert-dismissible'
+          this.statusUpdateMessageClass = 'alert alert-success alert-dismissible';
+          this.resetMessagesWithTimeout(MessageTimeout);
           this.campaign.campaignStatus = 'STARTED';
           this.campaign.startDate = Date.now().toString();
         },
@@ -122,8 +124,9 @@ export class CampaignDetailsComponent implements OnInit {
       .subscribe(
         data=> {
           this.statusUpdateMessage = "Status updated to Closed";
-          this.statusUpdateMessageClass = 'alert alert-success alert-dismissible'
+          this.statusUpdateMessageClass = 'alert alert-success alert-dismissible';
           this.campaign.campaignStatus = 'CLOSED';
+          this.resetMessagesWithTimeout(MessageTimeout);
         },
         error => {
           console.log(error);
@@ -137,5 +140,9 @@ export class CampaignDetailsComponent implements OnInit {
     this.message = null;
     this.uploadMessage = null;
     this.statusUpdateMessage = null;
+  }
+
+  private resetMessagesWithTimeout(timeout: number){
+    setTimeout(()=>this.resetMessages(),timeout)
   }
 }
