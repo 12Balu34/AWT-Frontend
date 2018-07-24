@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {backendBaseUrl} from "../../app-constants/backend-url";
 import {catchError, map} from "rxjs/operators";
@@ -11,11 +11,14 @@ import {UpdateUser} from "../../model/update-user";
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy{
   private user: User;
 
   constructor(private http: HttpClient) {
-    console.log('Authservice instantiated');
+  }
+
+  ngOnDestroy() {
+    this.logout();
   }
 
 
