@@ -22,7 +22,6 @@ export class PeakService {
   }
 
   public getAllPeaks(campaignId: string) {
-    console.log('getAllPeaks accessed with campaignId: ' + campaignId)
     return this.http.get<Peak[]>(backendBaseUrl + '/campaigns/'+ campaignId +'/peaks');
   }
 }
