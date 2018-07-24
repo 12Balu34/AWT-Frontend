@@ -22,7 +22,7 @@ const appRoutes: Routes = [
       { path: 'create-campaign', component: CreateCampaignComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]},
       { path: 'campaigns', component: ManagedCampaignsComponent,  canActivate: [AuthGuardService]},
       { path: 'campaigns/:id', component: CampaignDetailsComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]},
-      { path: 'campaigns/:id/map', component: MapPageComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]},
+      { path: 'campaigns/:id/map', component: MapPageComponent,  canActivate: [AuthGuardService]},
       { path: 'campaigns/:id/statistics', component: CampaignStatisticsComponent,  canActivate: [AuthGuardService, ManagerAuthguardService]}
     ]
   },
