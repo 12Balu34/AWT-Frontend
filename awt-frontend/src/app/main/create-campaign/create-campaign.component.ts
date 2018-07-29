@@ -28,7 +28,7 @@ export class CreateCampaignComponent implements OnInit {
     );
   }
 
-  private createCampaign() {
+   createCampaign() {
     const request: CreateCampaignRequest = {
       name: this.createCampaignForm.get('name').value
     };

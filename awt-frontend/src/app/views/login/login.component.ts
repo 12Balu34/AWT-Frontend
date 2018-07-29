@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private login() {
+    login() {
 
     const userCredentials = {
       username: this.loginForm.get('username').value,

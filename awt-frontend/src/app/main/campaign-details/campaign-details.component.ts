@@ -19,12 +19,12 @@ export class CampaignDetailsComponent implements OnInit {
   uploadPeaksForm: FormGroup;
   private peakFile: File;
 
-  private message: string;
-  private messageClass: string;
-  private uploadMessage: string;
-  private uploadMessageClass: string;
-  private statusUpdateMessage: string;
-  private statusUpdateMessageClass: string;
+  message: string;
+  messageClass: string;
+  uploadMessage: string;
+  uploadMessageClass: string;
+  statusUpdateMessage: string;
+  statusUpdateMessageClass: string;
 
 
   constructor(
@@ -33,7 +33,8 @@ export class CampaignDetailsComponent implements OnInit {
     private campaignService: CampaignService,
     private peakService: PeakService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.getCurrentCampaign();
@@ -41,9 +42,9 @@ export class CampaignDetailsComponent implements OnInit {
     this.createForm();
   }
 
-  private getCurrentCampaign(){
+  private getCurrentCampaign() {
     this.activatedRoute.paramMap.subscribe(
-      data=> {
+      data => {
         this.campaignObservable = this.campaignService.getSingleCampaign(data.get('id'));
       }
     )
@@ -59,7 +60,7 @@ export class CampaignDetailsComponent implements OnInit {
     )
   }
 
-  private createForm(){
+  private createForm() {
     this.uploadPeaksForm = this.formBuilder.group({
       peakFile: ['', Validators.required],
       isToBeAnnotated: [false, Validators.required]
@@ -67,7 +68,7 @@ export class CampaignDetailsComponent implements OnInit {
   }
 
 
-  handleFileInput (files: FileList) {
+  handleFileInput(files: FileList) {
     this.peakFile = files.item(0);
   }
 
@@ -88,7 +89,7 @@ export class CampaignDetailsComponent implements OnInit {
         this.uploadMessage = data.message;
         this.uploadMessageClass = 'alert alert-success';
         setTimeout(
-          ()=> {
+          () => {
             this.router.navigateByUrl('/campaigns/' + this.campaign.id.toString() + '/map')
           },
           1000
@@ -111,18 +112,18 @@ export class CampaignDetailsComponent implements OnInit {
           this.campaign.campaignStatus = 'STARTED';
           this.campaign.startDate = Date.now().toString();
         },
-            error => {
-              console.log(error);
-              this.statusUpdateMessage = error.error.message;
-              this.statusUpdateMessageClass = 'alert alert-danger alert-dismissible';
-            }
+        error => {
+          console.log(error);
+          this.statusUpdateMessage = error.error.message;
+          this.statusUpdateMessageClass = 'alert alert-danger alert-dismissible';
+        }
       );
   }
 
   private closeCampaign() {
     this.campaignService.updateCampaignStatus(this.campaign.id)
       .subscribe(
-        data=> {
+        data => {
           this.statusUpdateMessage = "Status updated to Closed";
           this.statusUpdateMessageClass = 'alert alert-success alert-dismissible';
           this.campaign.campaignStatus = 'CLOSED';
@@ -142,7 +143,7 @@ export class CampaignDetailsComponent implements OnInit {
     this.statusUpdateMessage = null;
   }
 
-  private resetMessagesWithTimeout(timeout: number){
-    setTimeout(()=>this.resetMessages(),timeout)
+  private resetMessagesWithTimeout(timeout: number) {
+    setTimeout(() => this.resetMessages(), timeout)
   }
 }

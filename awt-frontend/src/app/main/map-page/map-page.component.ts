@@ -20,28 +20,31 @@ import {MessageTimeout} from "../../app-constants/messageTimeout";
 })
 export class MapPageComponent implements OnInit {
   private dtOptions: DataTables.Settings = {};
-  private isManager;
+  isManager;
 
-  private campaignId: string;
-  private peakListObservable: Observable<Peak[]>
-  private peakList: Peak [];
-  private selectedPeak: Peak;
+  campaignId: string;
+  peakListObservable: Observable<Peak[]>
+  peakList: Peak [];
+  selectedPeak: Peak;
 
-  private annotationForm: FormGroup;
-  private localizedNames: FormArray;
+  annotationForm: FormGroup;
+  localizedNames: FormArray;
 
-  private baselayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: 'Open Street Map' });
+  private baselayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: 'Open Street Map'
+  });
   private map: L.Map;
   private mapMarkers = new TSMap<string, L.Marker>();
 
-  private message: string;
-  private messageClass: string;
+  message: string;
+  messageClass: string;
 
 
   options = {
     layers: [this.baselayer],
     zoom: 5,
-    center: L.latLng([ 47, 8 ])
+    center: L.latLng([47, 8])
   };
 
   constructor(
@@ -51,7 +54,8 @@ export class MapPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private annotationService: AnnotationService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.isManager = this.authService.isManager();
@@ -62,7 +66,7 @@ export class MapPageComponent implements OnInit {
   }
 
   //--------- Methods related to the Annotation Form ----------
-  private createForm(){
+  private createForm() {
     this.annotationForm = this.formBuilder.group({
       valid: [true, Validators.required],
       name: ['', Validators.required],
@@ -104,19 +108,19 @@ export class MapPageComponent implements OnInit {
       .on('click', this.onMarkerClick, this)
       .addTo(this.map);
 
-      this.mapMarkers.set(peak.id.toString(), marker);
+    this.mapMarkers.set(peak.id.toString(), marker);
   }
 
   rejectAnnotation(peakId: number, annotationId: number) {
     this.updateRejectedMarkerColor(peakId.toString());
     this.annotationService.rejectAnnotation(+this.campaignId, peakId, annotationId)
       .subscribe(
-      data => this.updateAnnotationStatus(false, annotationId),
-      error => {
-        this.message = error;
-        this.messageClass = 'alert alert-danger alert-dismissible';
-      }
-    )
+        data => this.updateAnnotationStatus(false, annotationId),
+        error => {
+          this.message = error;
+          this.messageClass = 'alert alert-danger alert-dismissible';
+        }
+      )
 
   }
 
@@ -138,9 +142,10 @@ export class MapPageComponent implements OnInit {
 
     //check if rejected annotations exist
     for (let annotation of peak.annotations) {
-      if(annotation.acceptedByManager != null && !annotation.acceptedByManager) {
+      if (annotation.acceptedByManager != null && !annotation.acceptedByManager) {
         return true;
-      };
+      }
+      ;
     }
     //no rejected annotations exist if loop finished without returning
     return false;
@@ -151,17 +156,17 @@ export class MapPageComponent implements OnInit {
     this.convertLocalizedPeaksToStringArray();
   }
 
-  removeLastLocalizedName(){
-    this.localizedNames.removeAt(this.localizedNames.length-1);
+  removeLastLocalizedName() {
+    this.localizedNames.removeAt(this.localizedNames.length - 1);
   }
 
   convertLocalizedPeaksToStringArray(): Array<string[]> {
-    if(this.localizedNames.length == 0) {
+    if (this.localizedNames.length == 0) {
       return null;
     }
     let tempArray = new Array<string[]>();
 
-    for(let i = 0; i <this.localizedNames.length; i++) {
+    for (let i = 0; i < this.localizedNames.length; i++) {
       let tempArrayComponent: string [] = new Array();
       tempArrayComponent.push(this.localizedNames.at(i).get('language').value);
       tempArrayComponent.push(this.localizedNames.at(i).get('name').value);
@@ -170,7 +175,7 @@ export class MapPageComponent implements OnInit {
     return tempArray;
   }
 
-  createAnnotation(){
+  createAnnotation() {
     const annotation: AnnotationBase = new AnnotationBase(
       this.annotationForm.get('name').value,
       +this.annotationForm.get('elevation').value,
@@ -183,13 +188,13 @@ export class MapPageComponent implements OnInit {
         data => {
           this.message = data.message;
           this.messageClass = 'alert alert-success alert-dismissible';
-          setTimeout(()=>this.resetMessage(), MessageTimeout);
+          setTimeout(() => this.resetMessage(), MessageTimeout);
           this.updateAnnotatedMarkerColor(this.selectedPeak.id.toString());
         },
         error => {
           this.message = error;
           this.messageClass = 'alert alert-danger alert-dismissible';
-          setTimeout(()=>this.resetMessage(), MessageTimeout)
+          setTimeout(() => this.resetMessage(), MessageTimeout)
         }
       )
   }
@@ -213,14 +218,14 @@ export class MapPageComponent implements OnInit {
   resolveMarkerColor(peak: Peak): MarkerColors {
     let annotationsLenght: number = peak.annotations.length;
 
-    if(!peak.toBeAnnotated) {
+    if (!peak.toBeAnnotated) {
       return MarkerColors.Green;
     }
-    if(annotationsLenght == 0 && peak.toBeAnnotated) {
+    if (annotationsLenght == 0 && peak.toBeAnnotated) {
       return MarkerColors.Yellow;
     }
-    if(annotationsLenght > 0 && peak.toBeAnnotated) {
-      if(this.hasRejectedAnnotations(peak)) {
+    if (annotationsLenght > 0 && peak.toBeAnnotated) {
+      if (this.hasRejectedAnnotations(peak)) {
         return MarkerColors.Red;
       }
       else return MarkerColors.Orange;
@@ -239,8 +244,8 @@ export class MapPageComponent implements OnInit {
     this.selectCurrentPeak(+event.sourceTarget.options.title);
   }
 
-  selectCurrentPeak(peakId: number){
-    for(let peak of this.peakList) {
+  selectCurrentPeak(peakId: number) {
+    for (let peak of this.peakList) {
       if (peak.id == peakId) {
         this.selectedPeak = peak;
       }
@@ -249,9 +254,9 @@ export class MapPageComponent implements OnInit {
 
 
   //--------- Methods to get Peaks -------------
-  private getPeakListObservable(){
+  private getPeakListObservable() {
     this.activatedRoute.paramMap.subscribe(
-      data=> {
+      data => {
         this.campaignId = data.get('id');
         this.peakListObservable = this.peakService.getAllPeaks(this.campaignId);
       }
@@ -279,7 +284,7 @@ export class MapPageComponent implements OnInit {
 
   private updateAnnotationStatus(isAccepted: boolean, annotationId: number) {
     for (let annotation of this.selectedPeak.annotations) {
-      if(annotation.id == annotationId) {
+      if (annotation.id == annotationId) {
         annotation.acceptedByManager = isAccepted;
         return;
       }

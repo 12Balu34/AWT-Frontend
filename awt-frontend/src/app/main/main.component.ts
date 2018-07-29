@@ -17,7 +17,7 @@ export class MainComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  private logout() {
+  logout() {
     this.authService.logout();
     //make sure the user is logged out
     if (!this.authService.isLoggedIn()) {

@@ -12,38 +12,39 @@ import {Observable} from "rxjs/internal/Observable";
   styleUrls: ['./campaign-statistics.component.css']
 })
 export class CampaignStatisticsComponent implements OnInit {
-  private campaignId: number;
-  private campaignStatistics: CampaignStatistics;
-  private campaignStatisticsObservable: Observable <CampaignStatistics>;
-  private annotatedPeaks: TSMap<number, Annotation> = new TSMap<number, Annotation>();
-  private annotatedPeaksWithRejectedAnnotations: TSMap<number, Annotation> = new TSMap<number, Annotation>();
+  campaignId: number;
+  campaignStatistics: CampaignStatistics;
+  campaignStatisticsObservable: Observable<CampaignStatistics>;
+  annotatedPeaks: TSMap<number, Annotation> = new TSMap<number, Annotation>();
+  annotatedPeaksWithRejectedAnnotations: TSMap<number, Annotation> = new TSMap<number, Annotation>();
 
-  private message: string;
-  private messageClass: string;
+  message: string;
+  messageClass: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private campaignService: CampaignService) { }
+  constructor(private activatedRoute: ActivatedRoute, private campaignService: CampaignService) {
+  }
 
   ngOnInit() {
     this.getCampaignStatisticsObservable();
     this.subscribeToCampaigStatisticsObservable();
   }
 
-  private getCampaignStatisticsObservable(){
+  private getCampaignStatisticsObservable() {
     this.activatedRoute.paramMap.subscribe(
-      data=> {
+      data => {
         this.campaignId = +data.get('id');
         this.campaignStatisticsObservable = this.campaignService.getCampaignStatistics(this.campaignId);
       }
     )
   }
 
-  private subscribeToCampaigStatisticsObservable(){
+  private subscribeToCampaigStatisticsObservable() {
     this.campaignStatisticsObservable
       .subscribe(
         data => {
           this.campaignStatistics = data;
         },
-        error=> {
+        error => {
           this.message = error;
           this.messageClass = 'alert alert-danger';
         }
