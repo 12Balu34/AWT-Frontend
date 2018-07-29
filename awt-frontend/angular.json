@@ -28,13 +28,12 @@
               }
             ],
             "styles": [
+              "src/assets/AdminLteResources/datatables.net-bs/css/dataTables.bootstrap.min.css",
               "src/styles.css",
               "src/assets/AdminLteResources/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/AdminLteResources/font-awesome/css/font-awesome.min.css",
-              "src/assets/AdminLteResources/Ionicons/css/ionicons.min.css",
               "src/assets/AdminLteResources/dist/css/AdminLTE.min.css",
               "src/assets/AdminLteResources/dist/css/skins/skin-blue.min.css",
-              "src/assets/AdminLteResources/datatables.net-bs/css/dataTables.bootstrap.min.css",
               "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [
