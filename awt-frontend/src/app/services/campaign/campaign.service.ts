@@ -6,6 +6,7 @@ import {throwError} from "rxjs/internal/observable/throwError";
 import {Campaign} from "../../model/campaign";
 import {catchError} from "rxjs/operators";
 import {ApiResponse} from "../../model/api-response";
+import {CampaignStatistics} from "../../model/CampaignStatistics";
 
 @Injectable({
   providedIn: 'root'
@@ -55,5 +56,12 @@ export class CampaignService {
 
   enrollInCampaign(campaignId: number) {
     return this.http.post<ApiResponse>(backendBaseUrl + '/campaigns/' + campaignId, null);
+  }
+
+  getCampaignStatistics(campaignId: number) {
+    return this.http.get<CampaignStatistics>(backendBaseUrl + '/campaigns/' + campaignId + '/statistics')
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 }
