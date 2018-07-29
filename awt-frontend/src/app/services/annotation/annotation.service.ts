@@ -21,6 +21,20 @@ export class AnnotationService {
       );
   }
 
+  acceptAnnotation(campaignId: number, peakId: number, annotationId: number){
+    return this.http.patch(backendBaseUrl + '/campaigns/' + campaignId + '/peaks/'+ peakId +'/annotations/'+ annotationId + '?accepted=true', null)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  rejectAnnotation(campaignId: number, peakId: number, annotationId: number){
+    return this.http.patch(backendBaseUrl + '/campaigns/' + campaignId + '/peaks/'+ peakId +'/annotations/'+ annotationId + '?accepted=false', null)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError (error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

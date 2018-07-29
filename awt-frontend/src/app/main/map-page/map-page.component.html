@@ -197,10 +197,10 @@
                       <td>{{annotation.valid}}</td>
                       <td>{{annotation.acceptedByManager}}</td>
                       <td>
-                        <button>Accept</button>
+                        <button class="btn btn-success btn-sm" *ngIf="annotation.acceptedByManager == null" (click)="acceptAnnotation(selectedPeak.id, annotation.id)">Accept</button>
                       </td>
                       <td>
-                        <button (click)="rejectAnnotation(selectedPeak.id, annotation.id)">Reject</button>
+                        <button class="btn btn-danger btn-sm" *ngIf="annotation.acceptedByManager == null" (click)="rejectAnnotation(selectedPeak.id, annotation.id)">Reject</button>
                       </td>
                     </tr>
                     </tbody>

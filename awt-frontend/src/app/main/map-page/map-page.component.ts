@@ -109,7 +109,26 @@ export class MapPageComponent implements OnInit {
 
   rejectAnnotation(peakId: number, annotationId: number) {
     this.updateRejectedMarkerColor(peakId.toString());
-    //TODO: post change to backend
+    this.annotationService.rejectAnnotation(+this.campaignId, peakId, annotationId)
+      .subscribe(
+      data => this.updateAnnotationStatus(false, annotationId),
+      error => {
+        this.message = error;
+        this.messageClass = 'alert alert-danger alert-dismissible';
+      }
+    )
+
+  }
+
+  acceptAnnotation(peakId: number, annotationId: number) {
+    this.annotationService.acceptAnnotation(+this.campaignId, peakId, annotationId)
+      .subscribe(
+        data => this.updateAnnotationStatus(true, annotationId),
+        error => {
+          this.message = error;
+          this.messageClass = 'alert alert-danger alert-dismissible';
+        }
+      )
   }
 
   hasRejectedAnnotations(peak: Peak): boolean {
@@ -256,5 +275,14 @@ export class MapPageComponent implements OnInit {
   private resetMessage() {
     this.messageClass = null;
     this.message = null;
+  }
+
+  private updateAnnotationStatus(isAccepted: boolean, annotationId: number) {
+    for (let annotation of this.selectedPeak.annotations) {
+      if(annotation.id == annotationId) {
+        annotation.acceptedByManager = isAccepted;
+        return;
+      }
+    }
   }
 }
