@@ -36,7 +36,6 @@ export class ManagedCampaignsComponent implements OnInit {
       .subscribe(
         data => {
           this.campaigns = data;
-          console.log(this.campaigns);
         }
       )
   }
