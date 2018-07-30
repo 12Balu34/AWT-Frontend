@@ -5,15 +5,19 @@ import {AuthService} from "../auth/auth.service";
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
-
+export class ManagerAuthguardService implements CanActivate{
+  role: string = localStorage.getItem('role');
   constructor(private authService: AuthService, private router: Router) { }
 
-  canActivate() {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigateByUrl('/login');
+  canActivate(): boolean{
+    if (this.authService.isManager()) {
+      return true;
+    }
+    else {
+      this.router.navigateByUrl('/campaigns');
       return false;
     }
-    return true;
   }
+
+
 }

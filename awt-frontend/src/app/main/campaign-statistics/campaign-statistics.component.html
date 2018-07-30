@@ -1,0 +1,180 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    Statistics page
+    <small>Campaign ADD ID LATER</small>
+  </h1>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-md-6">
+
+      <div *ngIf="message" [ngClass]="messageClass">
+        <button (click)="resetMessages()" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;
+        </button>
+        <h4><i class="icon fa fa-info"></i>Information:</h4>
+        {{message}}
+      </div>
+    </div>
+  </div>
+  <!-- Small boxes (Stat box) -->
+  <div *ngIf="campaignStatistics && !message">
+    <div class="row">
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-aqua">
+          <div class="inner">
+            <h3>{{campaignStatistics?.numberOfStartedPeaks}}</h3>
+            <p>Started Peaks</p>
+            <br>
+          </div>
+          <div class="icon">
+            <i class="fa fa-map-marker"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>{{campaignStatistics?.numberOfAnnotatedPeaks}}</h3>
+            <p>Annotated Peaks</p>
+            <br>
+          </div>
+          <div class="icon">
+            <i class="fa fa-sticky-note"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow">
+          <div class="inner">
+            <h3>{{campaignStatistics?.numberOfPeaksWithRejectedAnnotations}}</h3>
+            <p>Peaks with rejected Annotations</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-times-circle"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red">
+          <div class="inner">
+            <h3>{{campaignStatistics?.numberOfConflicts}}</h3>
+
+            <p>Conflicts</p>
+            <br>
+          </div>
+          <div class="icon">
+            <i class="fa fa-flash"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="pull-left header"><i class="fa fa-dashboard"></i>Details</li>
+            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Annotated Peaks</a></li>
+            <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Rejected Annotations</a></li>
+            <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">Conflicts</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+              <div class="row">
+                <div class="col-md-3">
+                  <p *ngIf="campaignStatistics?.annotatedPeaks?.length == 0">No annotated peaks so far</p>
+                  <div *ngIf="campaignStatistics?.annotatedPeaks?.length > 0">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>PeakId</th>
+                        <th>Peak Name</th>
+                        <th>Display Annotations</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let annotatedPeak of campaignStatistics.annotatedPeaks">
+                        <td>{{annotatedPeak.peakId}}</td>
+                        <td>{{annotatedPeak.peakName}}</td>
+                        <td><a href="" class="btn btn-link">Display</a></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_2">
+              <div class="row">
+                <div class="col-md-3">
+                  <p *ngIf="campaignStatistics?.annotatedPeaksWithRejectedAnnotations?.length == 0">No rejected annotations so far</p>
+                  <div *ngIf="campaignStatistics?.annotatedPeaksWithRejectedAnnotations?.length > 0">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>PeakId</th>
+                        <th>Peak Name</th>
+                        <th>Display Annotations</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let annotatedPeak of campaignStatistics.annotatedPeaksWithRejectedAnnotations">
+                        <td>{{annotatedPeak.peakId}}</td>
+                        <td>{{annotatedPeak.peakName}}</td>
+                        <td><a href="" class="btn btn-link">Display</a></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
+
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_3">
+              <p *ngIf="campaignStatistics?.conflicts?.length == 0">No conflicts so far</p>
+              <div *ngIf="campaignStatistics?.conflicts?.length > 0">
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>PeakId</th>
+                    <th>Peak Name</th>
+                    <th>Annotations with positive peak validity</th>
+                    <th>Annotations with positive negative peak validity</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let conflict of campaignStatistics.conflicts">
+                    <td>{{conflict.peakId}}</td>
+                    <td>{{conflict.peakName}}</td>
+                    <td>{{conflict.numberOfAnnotationsWithValidPeak}}</td>
+                    <td>{{conflict.numberOfAnnotationsWithInvalidPeak}}</td>
+
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
+
+          </div>
+          <!-- /.tab-content -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

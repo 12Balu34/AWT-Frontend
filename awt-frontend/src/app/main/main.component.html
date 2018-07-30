@@ -5,7 +5,7 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a routerLink="/campaigns" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>WT</span>
       <!-- logo for regular state and mobile devices -->
@@ -44,7 +44,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a routerLink="/profile" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a (click)="logout()"class="btn btn-default btn-flat">Sign out</a>
@@ -64,11 +64,10 @@
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">HEADER</li>
-        <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-        <li class="treeview">
+        <app-manager-sidebar *ngIf="user?.role == 'MANAGER'"></app-manager-sidebar>
+        <app-worker-sidebar *ngIf="user?.role == 'WORKER'"></app-worker-sidebar>
+
+        <!--<li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -78,7 +77,7 @@
             <li><a href="#">Link in level 2</a></li>
             <li><a href="#">Link in level 2</a></li>
           </ul>
-        </li>
+        </li>-->
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -88,20 +87,19 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+   <!-- <section class="content-header">
       <h1>
         Page Header
         <small>Optional description</small>
       </h1>
-    </section>
+    </section>-->
 
     <!-- Main content -->
     <section class="content container-fluid">
       <!--------------------------
         | Your Page Content Here |
         -------------------------->
-      <app-edit-user></app-edit-user>
-
+      <router-outlet></router-outlet>
     </section>
     <!-- /.content -->
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PasswordValidation} from "../../validators/password-validation";
 import {User} from "../../model/user";
@@ -36,7 +36,7 @@ export class SignupComponent implements OnInit {
     );
   }
 
-  private signup() {
+   signup() {
 
     const user: User = {
       username: this.signupForm.get('username').value,
