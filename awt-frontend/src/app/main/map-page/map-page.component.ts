@@ -10,7 +10,7 @@ import {TSMap} from "typescript-map";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth/auth.service";
 import {AnnotationService} from "../../services/annotation/annotation.service";
-import {AnnotationBase} from "../../model/Annotation";
+import {Annotation, AnnotationBase} from "../../model/Annotation";
 import {MessageTimeout} from "../../app-constants/messageTimeout";
 
 @Component({
@@ -23,9 +23,13 @@ export class MapPageComponent implements OnInit {
   isManager;
 
   campaignId: string;
-  peakListObservable: Observable<Peak[]>
+  peakListObservable: Observable<Peak[]>;
   peakList: Peak [];
   selectedPeak: Peak;
+
+  workerAnnotationsObservable: Observable<Annotation[]>;
+  workerAnnotations: Annotation[];
+  selectedWorkerAnnotation: Annotation;
 
   annotationForm: FormGroup;
   localizedNames: FormArray;
@@ -87,6 +91,11 @@ export class MapPageComponent implements OnInit {
     this.map = map;
     this.getPeakListObservable();
     this.subscribeToPeakListObservable();
+
+    if(!this.isManager) {
+      this.getWorkerAnnotationsObservable();
+      this.subscribeToWorkerAnnotationsObservable();
+    }
   }
 
   addAllMarkers() {
@@ -96,12 +105,18 @@ export class MapPageComponent implements OnInit {
   }
 
   addSingleMarker(peak: Peak) {
-    let color = this.resolveMarkerColor(peak);
+    let color;
 
+    if(this.isManager) {
+      color = this.resolveManagerMarkerColor(peak);
+    }
+    else {
+      color = this.resolveWorkerMarkerColor(peak);
+    }
     let marker = L.marker(
       [peak.latitude, peak.longitude],
       {
-        icon: this.iconBuilder(this.resolveMarkerColor(peak)),
+        icon: this.iconBuilder(color),
         title: peak.id.toString(),
         clickable: true
       })
@@ -183,6 +198,7 @@ export class MapPageComponent implements OnInit {
       this.annotationForm.get('valid').value == true
     );
 
+
     this.annotationService.createAnnotation(+this.campaignId, this.selectedPeak.id, annotation)
       .subscribe(
         data => {
@@ -196,7 +212,10 @@ export class MapPageComponent implements OnInit {
           this.messageClass = 'alert alert-danger alert-dismissible';
           setTimeout(() => this.resetMessage(), MessageTimeout)
         }
-      )
+      );
+    //add new annotation to temporary workerAnnotationArray to update view until next reload
+    this.selectedWorkerAnnotation = new Annotation(annotation, this.selectedPeak.id);
+    this.workerAnnotations.push(this.selectedWorkerAnnotation);
   }
 
 
@@ -215,22 +234,39 @@ export class MapPageComponent implements OnInit {
       );
   }
 
-  resolveMarkerColor(peak: Peak): MarkerColors {
-    let annotationsLenght: number = peak.annotations.length;
+  resolveManagerMarkerColor(peak: Peak): MarkerColors {
+    let annotationsLength: number = peak.annotations.length;
 
     if (!peak.toBeAnnotated) {
       return MarkerColors.Green;
     }
-    if (annotationsLenght == 0 && peak.toBeAnnotated) {
+    if (annotationsLength == 0 && peak.toBeAnnotated) {
       return MarkerColors.Yellow;
     }
-    if (annotationsLenght > 0 && peak.toBeAnnotated) {
+    if (annotationsLength > 0 && peak.toBeAnnotated) {
       if (this.hasRejectedAnnotations(peak)) {
         return MarkerColors.Red;
       }
       else return MarkerColors.Orange;
     }
     return MarkerColors.Blue;
+  }
+
+  resolveWorkerMarkerColor(peak: Peak): MarkerColors {
+
+    if(!peak.toBeAnnotated){
+      return MarkerColors.Green;
+    }
+    let currentAnnotation: Annotation = this.findWorkerAnnotationForPeak(peak.id);
+
+    if (currentAnnotation == null){
+      return MarkerColors.Yellow;
+    }
+
+    if (currentAnnotation.acceptedByManager != null && !currentAnnotation.acceptedByManager) {
+      return MarkerColors.Red;
+    }
+    return MarkerColors.Orange;
   }
 
   iconBuilder(color: MarkerColors): L.Icon {
@@ -241,6 +277,9 @@ export class MapPageComponent implements OnInit {
   }
 
   onMarkerClick(event) {
+    if (!this.isManager) {
+      this.selectWorkerAnnotation(+event.sourceTarget.options.title);
+    }
     this.selectCurrentPeak(+event.sourceTarget.options.title);
   }
 
@@ -250,6 +289,13 @@ export class MapPageComponent implements OnInit {
         this.selectedPeak = peak;
       }
     }
+    if (!this.isManager) {
+      this.selectWorkerAnnotation(peakId);
+    }
+  }
+
+  selectWorkerAnnotation(peakId: number) {
+    this.selectedWorkerAnnotation = this.findWorkerAnnotationForPeak(peakId);
   }
 
 
@@ -267,7 +313,15 @@ export class MapPageComponent implements OnInit {
     this.peakListObservable.subscribe(
       data => {
         this.peakList = data;
-        this.addAllMarkers();
+
+        if(this.isManager) {
+          this.addAllMarkers();
+        }
+        else {
+          this.peakListObservable.subscribe(
+            data => this.addAllMarkers()
+          )
+        }
       },
       error => {
         console.log(error)
@@ -289,5 +343,31 @@ export class MapPageComponent implements OnInit {
         return;
       }
     }
+  }
+  //--------- Methods to get annotations if the user is a worker -------------
+  private getWorkerAnnotationsObservable() {
+    this. workerAnnotationsObservable = this.annotationService.getWorkerAnnotations(+this.campaignId);
+  }
+
+  private subscribeToWorkerAnnotationsObservable() {
+    this.workerAnnotationsObservable
+      .subscribe(
+        data=>{
+          this.workerAnnotations = data;
+          console.log(this.workerAnnotations);
+        },
+        error => {
+          console.log(error);
+        }
+      )
+  }
+
+  private findWorkerAnnotationForPeak(peakId: number): Annotation {
+    for (let annotation of this.workerAnnotations) {
+      if (annotation.peakId == peakId) {
+        return annotation;
+      }
+    }
+    return null;
   }
 }

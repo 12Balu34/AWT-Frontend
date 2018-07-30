@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {backendBaseUrl} from "../../app-constants/backend-url";
-import {AnnotationBase} from "../../model/Annotation";
+import {Annotation, AnnotationBase} from "../../model/Annotation";
 import {throwError} from "rxjs/internal/observable/throwError";
 import {catchError} from "rxjs/operators";
 import {ApiResponse} from "../../model/api-response";
@@ -49,5 +49,12 @@ export class AnnotationService {
     }
     // return an observable with a user-facing error message
     return throwError(error.error.message);
+  }
+
+  getWorkerAnnotations(campaignId: number) {
+    return this.http.get<Annotation[]>(backendBaseUrl + '/campaigns/' + campaignId +'/annotations')
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 }

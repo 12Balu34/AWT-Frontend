@@ -212,80 +212,83 @@
             <!-- Worker view -->
             <div *ngIf="!isManager">
               <p *ngIf="!selectedPeak">Select a peak in the map to annotate it</p>
-
-              <form *ngIf="selectedPeak" [formGroup]="annotationForm">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input formControlName="valid" type="radio" id="optionsRadios1"
-                             value="true" [checked]="true">
-                      Mark Peak as valid
-                    </label>
-                  </div>
-                  <div class="radio">
-                    <label>
-                      <input formControlName="valid" type="radio" id="optionsRadios2"
-                             value="false">
-                      Mark Peak as invalid
-                    </label>
-                  </div>
-                </div>
-
-                <div *ngIf="annotationForm.controls.valid.value =='false'">
-
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input formControlName="name" type="text" class="form-control" placeholder="Name">
-                      </div>
+              <p *ngIf="selectedPeak && !selectedPeak.toBeAnnotated">This peak is not to be annotated</p>
+              <div *ngIf="selectedPeak && selectedPeak.toBeAnnotated">
+                <form *ngIf="!selectedWorkerAnnotation" [formGroup]="annotationForm">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input formControlName="valid" type="radio" id="optionsRadios1"
+                               value="true" [checked]="true">
+                        Mark Peak as valid
+                      </label>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input formControlName="elevation" type="text" class="form-control" placeholder="Elevation">
-                      </div>
+                    <div class="radio">
+                      <label>
+                        <input formControlName="valid" type="radio" id="optionsRadios2"
+                               value="false">
+                        Mark Peak as invalid
+                      </label>
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div formArrayName="localizedNames"
-                         *ngFor="let localizedName of annotationForm.get('localizedNames').controls; let i = index;">
-                      <div [formGroupName]="i">
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <input class="form-control" formControlName="name" placeholder="Localized name">
-                          </div>
+                  <div *ngIf="annotationForm.controls.valid.value =='false'">
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input formControlName="name" type="text" class="form-control" placeholder="Name">
                         </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <input class="form-control" formControlName="language" placeholder="Language">
-                          </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input formControlName="elevation" type="text" class="form-control" placeholder="Elevation">
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div *ngIf="annotationForm.controls.valid.value =='false'">
-                  <button (click)="addLocalizedName()" type="button" class="btn btn-primary btn-sm"
-                          style="margin-right: 5px; ">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                  <button (click)="removeLastLocalizedName()" type="button" class="btn btn-warning btn-sm"
-                          style="margin-right: 5px;">
-                    <i class="fa fa-minus"></i>
-                  </button>
-                  <span>Add/ Remove localized names</span>
-                </div>
 
-                <div class="row">
-                  <div class="col-md-3">
-                    <br>
-                    <button (click)="createAnnotation()"
-                            [disabled]="annotationForm.controls.valid.value =='false' && annotationForm.invalid"
-                            class="btn btn-primary">Submit
+                    <div class="row">
+                      <div formArrayName="localizedNames"
+                           *ngFor="let localizedName of annotationForm.get('localizedNames').controls; let i = index;">
+                        <div [formGroupName]="i">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <input class="form-control" formControlName="name" placeholder="Localized name">
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <input class="form-control" formControlName="language" placeholder="Language">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="annotationForm.controls.valid.value =='false'">
+                    <button (click)="addLocalizedName()" type="button" class="btn btn-primary btn-sm"
+                            style="margin-right: 5px; ">
+                      <i class="fa fa-plus"></i>
                     </button>
+                    <button (click)="removeLastLocalizedName()" type="button" class="btn btn-warning btn-sm"
+                            style="margin-right: 5px;">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                    <span>Add/ Remove localized names</span>
                   </div>
-                </div>
-              </form>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <br>
+                      <button (click)="createAnnotation()"
+                              [disabled]="annotationForm.controls.valid.value =='false' && annotationForm.invalid"
+                              class="btn btn-primary">Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                <p *ngIf="!message && selectedWorkerAnnotation">You already annotated this peak</p>
+              </div>
             </div>
           </div>
         </div>
