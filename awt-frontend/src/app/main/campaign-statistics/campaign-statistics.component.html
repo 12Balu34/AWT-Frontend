@@ -91,7 +91,7 @@
           <div class="tab-content">
             <div class="tab-pane active" id="tab_1">
               <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-3">
                   <p *ngIf="campaignStatistics?.annotatedPeaks?.length == 0">No annotated peaks so far</p>
                   <div *ngIf="campaignStatistics?.annotatedPeaks?.length > 0">
                     <table class="table table-bordered">
@@ -115,44 +115,39 @@
                     </table>
                   </div>
                 </div>
-              </div>
-
-              <div class="row">
-                <div *ngIf="selectedPeakAnnotations">
-                  <div class="col-md-9">
-                    <table class="table table-bordered">
-                      <thead>
-                      <tr>
-                        <th>Annotation Id</th>
-                        <th>Created On</th>
-                        <th>Name</th>
-                        <th>Elevation</th>
-                        <th>Localized Names</th>
-                        <th>Worker Name</th>
-                        <th>Valid</th>
-                        <th>Accepted By Manager</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let annotation of selectedPeakAnnotations">
-                        <td>{{annotation.id}}</td>
-                        <td>{{annotation.creationDateTime | date: 'dd.MM.yyyy'}}</td>
-                        <td>{{annotation.name}}</td>
-                        <td>{{annotation.elevation}}</td>
-                        <td>
-                          <ul>
-                            <li *ngFor="let localizedName of annotation.localizedPeakNames">
-                              {{localizedName[1]}} ({{localizedName[0]}})
-                            </li>
-                          </ul>
-                        </td>
-                        <td>{{annotation.workerName}}</td>
-                        <td>{{annotation.valid}}</td>
-                        <td>{{annotation.acceptedByManager}}</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                <div *ngIf="selectedPeakAnnotations" class="col-md-9">
+                  <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                      <th>Annotation Id</th>
+                      <th>Created On</th>
+                      <th>Name</th>
+                      <th>Elevation</th>
+                      <th>Localized Names</th>
+                      <th>Worker Name</th>
+                      <th>Valid</th>
+                      <th>Accepted By Manager</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let annotation of selectedPeakAnnotations">
+                      <td>{{annotation.id}}</td>
+                      <td>{{annotation.creationDateTime | date: 'dd.MM.yyyy'}}</td>
+                      <td>{{annotation.name}}</td>
+                      <td>{{annotation.elevation}}</td>
+                      <td>
+                        <ul>
+                          <li *ngFor="let localizedName of annotation.localizedPeakNames">
+                            {{localizedName[1]}} ({{localizedName[0]}})
+                          </li>
+                        </ul>
+                      </td>
+                      <td>{{annotation.workerName}}</td>
+                      <td>{{annotation.valid}}</td>
+                      <td>{{annotation.acceptedByManager}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -177,53 +172,51 @@
                       <tr *ngFor="let annotatedPeak of campaignStatistics.annotatedPeaksWithRejectedAnnotations">
                         <td>{{annotatedPeak.peakId}}</td>
                         <td>{{annotatedPeak.peakName}}</td>
-                        <td><button (click)="displayRejectedAnnotations(annotatedPeak.peakId)" class="btn btn-link">Display</button></td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div *ngIf="selectedPeakWithRejectedAnnotations">
-                  <div class="col-md-9">
-                    <table class="table table-bordered">
-                      <thead>
-                      <tr>
-                        <th>Annotation Id</th>
-                        <th>Created On</th>
-                        <th>Name</th>
-                        <th>Elevation</th>
-                        <th>Localized Names</th>
-                        <th>Worker Name</th>
-                        <th>Valid</th>
-                        <th>Accepted By Manager</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let annotation of selectedPeakWithRejectedAnnotations">
-                        <td>{{annotation.id}}</td>
-                        <td>{{annotation.creationDateTime | date: 'dd.MM.yyyy'}}</td>
-                        <td>{{annotation.name}}</td>
-                        <td>{{annotation.elevation}}</td>
                         <td>
-                          <ul>
-                            <li *ngFor="let localizedName of annotation.localizedPeakNames">
-                              {{localizedName[1]}} ({{localizedName[0]}})
-                            </li>
-                          </ul>
+                          <button (click)="displayRejectedAnnotations(annotatedPeak.peakId)" class="btn btn-link">
+                            Display
+                          </button>
                         </td>
-                        <td>{{annotation.workerName}}</td>
-                        <td>{{annotation.valid}}</td>
-                        <td>{{annotation.acceptedByManager}}</td>
                       </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
+                <div *ngIf="selectedPeakWithRejectedAnnotations" class="col-md-9">
+                  <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                      <th>Annotation Id</th>
+                      <th>Created On</th>
+                      <th>Name</th>
+                      <th>Elevation</th>
+                      <th>Localized Names</th>
+                      <th>Worker Name</th>
+                      <th>Valid</th>
+                      <th>Accepted By Manager</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let annotation of selectedPeakWithRejectedAnnotations">
+                      <td>{{annotation.id}}</td>
+                      <td>{{annotation.creationDateTime | date: 'dd.MM.yyyy'}}</td>
+                      <td>{{annotation.name}}</td>
+                      <td>{{annotation.elevation}}</td>
+                      <td>
+                        <ul>
+                          <li *ngFor="let localizedName of annotation.localizedPeakNames">
+                            {{localizedName[1]}} ({{localizedName[0]}})
+                          </li>
+                        </ul>
+                      </td>
+                      <td>{{annotation.workerName}}</td>
+                      <td>{{annotation.valid}}</td>
+                      <td>{{annotation.acceptedByManager}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-
             </div>
             <!-- /.tab-pane -->
 
