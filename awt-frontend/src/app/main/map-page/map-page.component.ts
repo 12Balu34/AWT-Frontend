@@ -283,8 +283,8 @@ export class MapPageComponent implements OnInit {
 
   iconBuilder(color: MarkerColors): L.Icon {
     return icon({
-      iconUrl: 'assets/marker-icon-' + color + '.png',
-      shadowUrl: 'assets/marker-shadow.png'
+      iconUrl: 'assets/leaflet-marker-images/marker-icon-' + color + '.png',
+      shadowUrl: 'assets/leaflet-marker-images/marker-shadow.png'
     })
   }
 
