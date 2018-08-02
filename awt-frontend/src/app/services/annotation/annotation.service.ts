@@ -57,4 +57,18 @@ export class AnnotationService {
         catchError(this.handleError)
       );
   }
+
+  getAllAnnotationsForPeak(campaignId: number, peakId: number) {
+    return this.http.get<Annotation[]>(backendBaseUrl + '/campaigns/' + campaignId + '/peaks/' + peakId + '/annotations')
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  getRejectedAnnotationsForPeak(campaignId: number, peakId: number) {
+    return this.http.get<Annotation[]>(backendBaseUrl + '/campaigns/' + campaignId + '/peaks/' + peakId + '/annotations?accepted=false')
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }

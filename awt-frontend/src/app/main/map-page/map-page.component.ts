@@ -191,14 +191,26 @@ export class MapPageComponent implements OnInit {
   }
 
   createAnnotation() {
-    const annotation: AnnotationBase = new AnnotationBase(
-      this.annotationForm.get('name').value,
-      +this.annotationForm.get('elevation').value,
-      this.convertLocalizedPeaksToStringArray(),
-      this.annotationForm.get('valid').value == true
-    );
+    let annotation: AnnotationBase;
+    let isValid: boolean = this.annotationForm.get('valid').value == true;
 
+    if(isValid) {
+      annotation = new AnnotationBase(
+        null,
+        null,
+        null,
+        isValid
+      );
+    }
 
+    if(!isValid) {
+      annotation = new AnnotationBase(
+        this.annotationForm.get('name').value,
+        +this.annotationForm.get('elevation').value,
+        this.convertLocalizedPeaksToStringArray(),
+        isValid
+      );
+    }
     this.annotationService.createAnnotation(+this.campaignId, this.selectedPeak.id, annotation)
       .subscribe(
         data => {
