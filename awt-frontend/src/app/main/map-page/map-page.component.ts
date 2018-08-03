@@ -72,7 +72,7 @@ export class MapPageComponent implements OnInit {
   //--------- Methods related to the Annotation Form ----------
   private createForm() {
     this.annotationForm = this.formBuilder.group({
-      valid: [true, Validators.required],
+      valid: ['true', Validators.required],
       name: ['', Validators.required],
       elevation: ['', Validators.required],
       localizedNames: this.formBuilder.array([this.createLocalizedName()])
@@ -192,7 +192,7 @@ export class MapPageComponent implements OnInit {
 
   createAnnotation() {
     let annotation: AnnotationBase;
-    let isValid: boolean = this.annotationForm.get('valid').value == true;
+    let isValid: boolean = this.annotationForm.get('valid').value == 'true';
 
     if(isValid) {
       annotation = new AnnotationBase(
