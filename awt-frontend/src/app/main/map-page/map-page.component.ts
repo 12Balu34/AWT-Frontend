@@ -13,8 +13,6 @@ import {AnnotationService} from "../../services/annotation/annotation.service";
 import {Annotation, AnnotationBase} from "../../model/Annotation";
 import {MessageTimeout} from "../../app-constants/messageTimeout";
 
-window['CESIUM_BASE_URL'] = '/assets/cesium/';
-
 @Component({
   selector: 'app-map-page',
   templateUrl: './map-page.component.html',
