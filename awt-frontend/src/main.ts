@@ -7,6 +7,6 @@ import {environment} from './environments/environment';
 if (environment.production) {
   enableProdMode();
 }
-Cesium.buildModuleUrl.setBaseUrl('/assets/cesium/');
+Cesium.buildModuleUrl.setBaseUrl('/src/assets/cesium/');
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));
