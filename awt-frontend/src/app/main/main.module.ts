@@ -13,6 +13,7 @@ import {CampaignDetailsComponent} from './campaign-details/campaign-details.comp
 import {MapPageComponent} from './map-page/map-page.component';
 import {CampaignStatisticsComponent} from './campaign-statistics/campaign-statistics.component';
 import {LeafletModule} from "@asymmetrik/angular2-leaflet";
+import {AngularCesiumModule} from 'angular-cesium';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import {LeafletModule} from "@asymmetrik/angular2-leaflet";
     AppRoutingModule,
     ReactiveFormsModule,
     DataTablesModule,
-    LeafletModule
+    LeafletModule,
+    AngularCesiumModule.forRoot()
   ],
   declarations: [
     MainComponent,

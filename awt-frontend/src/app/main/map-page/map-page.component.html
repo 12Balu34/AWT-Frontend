@@ -46,7 +46,10 @@
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">
-                Cesium Map goes here
+                <ac-map id="cesium-map">
+                  <ac-layer acFor="let peak of peakList$" [context]="this">
+                  </ac-layer>
+                </ac-map>
               </div>
               <!-- /.tab-pane -->
 

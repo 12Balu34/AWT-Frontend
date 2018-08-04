@@ -20,7 +20,12 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/cesium/Build/Cesium",
+                "output": "src/assets/cesium"
+              }
             ],
             "styles": [
               "src/assets/AdminLteResources/datatables.net-bs/css/dataTables.bootstrap.min.css",
@@ -29,15 +34,16 @@
               "src/assets/AdminLteResources/font-awesome/css/font-awesome.min.css",
               "src/assets/AdminLteResources/dist/css/AdminLTE.min.css",
               "src/assets/AdminLteResources/dist/css/skins/skin-blue.min.css",
-              "node_modules/leaflet/dist/leaflet.css"
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/cesium/Build/Cesium/Widgets/widgets.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "src/assets/AdminLteResources/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/AdminLteResources/dist/js/adminlte.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
-              "node_modules/leaflet/dist/leaflet.js"
-
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/cesium/Build/Cesium/Cesium.js"
             ]
           },
           "configurations": {

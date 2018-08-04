@@ -2,3 +2,10 @@
   width: 1em;
   height: auto;
 }
+#cesium-map {
+  width: 100%; height: 720px; margin: 0; padding: 0; overflow: hidden;
+}
+
+.map-container {
+  width: 100%; height: 720px; margin: 0; padding: 0; overflow: hidden;
+}
