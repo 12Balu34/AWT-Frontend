@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
           this.messageClass = 'alert alert-success';
           this.message = 'Login successful';
           this.router.navigateByUrl('/campaigns');
+          location.reload();
         },
         error => {
           this.messageClass = 'alert alert-danger';

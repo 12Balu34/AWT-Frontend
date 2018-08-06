@@ -41,7 +41,7 @@ export class CreateCampaignComponent implements OnInit {
           setTimeout(()=>this.router.navigateByUrl('/campaigns'),1500);
         },
         error => {
-          console.log(JSON.stringify(error))
+          console.log(JSON.stringify(error));
           this.message = error.error.message;
           this.messageClass = 'alert alert-danger'
         }

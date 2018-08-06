@@ -11,19 +11,21 @@ import {AuthService} from "./services/auth/auth.service";
 import {HttpClientModule} from "@angular/common/http";
 import {MainModule} from "./main/main.module";
 import {CampaignService} from "./services/campaign/campaign.service";
+import {AngularCesiumModule} from 'angular-cesium';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MainModule
+    MainModule,
+    AngularCesiumModule.forRoot()
   ],
   providers: [
     httpInterceptorProviders,
